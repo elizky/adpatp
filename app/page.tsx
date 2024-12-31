@@ -1,6 +1,10 @@
 import { auth } from '@/auth';
+import MatchesCards from '@/components/MatchesCards';
+import RankingsTable from '@/components/RankingTable';
 import SignIn from '@/components/sign-in';
 import { SignOut } from '@/components/sign-out';
+import { players } from '@/data/players';
+import Image from 'next/image';
 
 export default async function Home() {
   const session = await auth();
@@ -10,23 +14,28 @@ export default async function Home() {
       <header className='border-b border-border'>
         <div className='container mx-auto px-4 py-4'>
           <div className='flex items-center gap-4'>
-            <img src='/placeholder.svg?height=40&width=40' alt='ATP Logo' className='h-10 w-10' />
-            <h1 className='text-xl font-semibold'>ATP Tennis Rankings</h1>
-            <h3> Welcome {session?.user.name}</h3>
+            <Image
+              className='dark:invert'
+              src='/tennis.svg'
+              alt='ADP ATP Logo'
+              width={15}
+              height={15}
+              priority
+            />
+            <h1 className='text-xl font-semibold'>ADP ATP</h1>
           </div>
+          {!session ? <SignIn /> : <SignOut />}
         </div>
       </header>
 
       <main className='container mx-auto px-4 py-6'>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-          {!session ? <SignIn /> : <SignOut />}
-
-          {/* <div className='lg:col-span-2'>
+          <div className='lg:col-span-2'>
             <RankingsTable players={players} />
           </div>
           <div>
-            <LiveMatches />
-          </div> */}
+            <MatchesCards />
+          </div>
         </div>
       </main>
     </div>

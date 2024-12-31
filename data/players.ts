@@ -1,0 +1,42 @@
+export const players = [
+  {
+    rank: 1,
+    name: 'Sinner J.',
+    country: 'Italy',
+    points: 11830,
+    previousPoints: 11825,
+    image: 'https://api.dicebear.com/9.x/bottts/svg?seed=Amaya',
+  },
+  {
+    rank: 2,
+    name: 'Zverev A.',
+    country: 'Germany',
+    points: 7635,
+    previousPoints: 7715,
+    image: 'https://api.dicebear.com/9.x/bottts/svg?seed=Robert',
+  },
+  {
+    rank: 3,
+    name: 'Alcaraz C.',
+    country: 'Spain',
+    points: 7010,
+    previousPoints: 7010,
+    image: 'https://api.dicebear.com/9.x/bottts/svg?seed=Vivian',
+  },
+  {
+    rank: 4,
+    name: 'Fritz T.',
+    country: 'United States',
+    points: 5055,
+    previousPoints: 5110,
+    image: 'https://api.dicebear.com/9.x/bottts/svg?seed=Sophia',
+  },
+  {
+    rank: 5,
+    name: 'Medvedev D.',
+    country: 'Russia',
+    points: 5030,
+    previousPoints: 5030,
+    image: 'https://api.dicebear.com/9.x/bottts/svg?seed=Leah',
+  },
+];
