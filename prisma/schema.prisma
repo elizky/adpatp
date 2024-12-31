@@ -21,6 +21,7 @@ model User {
     image         String?
     role          Role      @default(user)
     accounts      Account[]
+    players       Player[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -45,4 +46,87 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@id([provider, providerAccountId])
+}
+
+model Player {
+    id        Int     @id @default(autoincrement())
+    name      String
+    avatarUrl String? // URL para el avatar del jugador
+    userId    String? // Relación opcional con un usuario
+    user      User?   @relation(fields: [userId], references: [id])
+    matches   Match[] // Relación con partidos (Player1 o Player2 en cualquier partido)
+
+    // Estadísticas del jugador
+    ranking        Int // Nuevo campo: ranking actual del jugador
+    rankingHistory RankingHistory[] // Relación con el historial de rankings
+    gamesWon       Int              @default(0)
+    gamesLost      Int              @default(0)
+    setsWon        Int              @default(0)
+    setsLost       Int              @default(0)
+    tiebreaksWon   Int              @default(0)
+    tiebreaksLost  Int              @default(0)
+    matchesLost    Int              @default(0) // Nuevas estadísticas: partidos perdidos
+
+    // Información personalizada del jugador
+    racket         String? // Marca y modelo de la raqueta (ejemplo: "Wilson Blade 98")
+    handedness     String? // Mano hábil: "Right" o "Left"
+    backhand       String? // Revés: "One-handed" o "Two-handed"
+    clothingBrand  String? // Marca de ropa favorita
+    birthplace     String? // Lugar de nacimiento
+    favoriteShot   String? // Tiro favorito (ejemplo: "Drop shot")
+    rivalries      String? // Notas sobre rivalidades (ejemplo: "No se lleva bien con Juan")
+    playStyle      String? // Estilo de juego (ejemplo: "Aggressive Baseliner")
+    height         Float? // Altura en metros
+    weight         Float? // Peso en kilogramos
+    favoritePlayer String? // Jugador favorito de la ATP/WTA
+
+    player1Matches Match[] @relation("Player1Matches")
+    player2Matches Match[] @relation("Player2Matches")
+    matchesWon     Match[] @relation("MatchWinner")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Match {
+    id       Int      @id @default(autoincrement())
+    date     DateTime @default(now()) // Fecha del partido
+    location String? // Lugar donde se jugó el partido (opcional)
+
+    player1Id Int
+    player1   Player @relation("Player1Matches", fields: [player1Id], references: [id])
+
+    player2Id Int
+    player2   Player @relation("Player2Matches", fields: [player2Id], references: [id])
+
+    winnerId Int? // El ganador del partido (Player1 o Player2)
+    winner   Player? @relation("MatchWinner", fields: [winnerId], references: [id])
+
+    player1Games  Int[] // Juegos ganados por Player1 en cada set
+    player2Games  Int[] // Juegos ganados por Player2 en cada set
+    superTiebreak Int[] // Resultados del super tiebreak (player1, player2) [opcional]
+
+    gamesWonByPlayer1     Int @default(0) // Total juegos ganados por Player1 (sin incluir tiebreak)
+    gamesWonByPlayer2     Int @default(0) // Total juegos ganados por Player2 (sin incluir tiebreak)
+    setsWonByPlayer1      Int @default(0) // Total sets ganados por Player1
+    setsWonByPlayer2      Int @default(0) // Total sets ganados por Player2
+    tiebreaksWonByPlayer1 Int @default(0) // Total tiebreaks ganados por Player1
+    tiebreaksWonByPlayer2 Int @default(0) // Total tiebreaks ganados por Player2
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Player    Player?  @relation(fields: [playerId], references: [id])
+    playerId  Int?
+}
+
+model RankingHistory {
+    id       Int    @id @default(autoincrement())
+    playerId Int // Relación con el jugador
+    player   Player @relation(fields: [playerId], references: [id])
+
+    ranking Int // El ranking en ese momento
+    date    DateTime @default(now()) // Fecha del cambio de ranking
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }

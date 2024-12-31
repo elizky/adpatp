@@ -2,9 +2,6 @@
   "name": "adpatp",
   "version": "0.1.0",
   "private": true,
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
@@ -20,7 +17,15 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
+    "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^6.1.0",
+    "@radix-ui/react-avatar": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.4",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
+    "@radix-ui/react-label": "^2.1.1",
+    "@radix-ui/react-select": "^2.1.4",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-toggle": "^1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv-cli": "^8.0.0",
@@ -29,12 +34,14 @@
     "next-auth": "^5.0.0-beta.25",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
+    "@types/node": "^20.17.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
@@ -42,6 +49,10 @@
     "postcss": "^8",
     "prisma": "^6.1.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
