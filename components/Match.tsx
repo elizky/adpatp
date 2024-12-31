@@ -89,7 +89,7 @@ export default function MatchCard({ match }: { match: Match }) {
           </div>
         </div>
       </CardContent>
-      <CardFooter className='text-muted-foreground text-xs'>
+      <CardFooter className='text-muted-foreground text-xs font-mono'>
         {new Date(match.date).toLocaleString()}
       </CardFooter>
     </Card>

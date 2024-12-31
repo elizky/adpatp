@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Player } from '@/types/types';
+import Link from 'next/link';
 
 interface RankingsTableProps {
   players: Player[];
@@ -38,9 +39,9 @@ export default function RankingsTable({ players }: RankingsTableProps) {
                     <AvatarImage src={player.avatarUrl || `/tennis-player.svg`} />
                     <AvatarFallback>{player.name[0]}</AvatarFallback>
                   </Avatar>
-                  <div>
+                  <Link href={`/player/${player.id}`}>
                     <div className='font-medium'>{player.name}</div>
-                  </div>
+                  </Link>
                 </div>
               </TableCell>
             </TableRow>
