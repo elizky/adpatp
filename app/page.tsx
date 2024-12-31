@@ -3,6 +3,7 @@ import MatchesCards from '@/components/MatchesCards';
 import RankingsTable from '@/components/RankingTable';
 import SignIn from '@/components/sign-in';
 import { SignOut } from '@/components/sign-out';
+import { matches } from '@/data/matches';
 import { players } from '@/data/players';
 import Image from 'next/image';
 
@@ -34,7 +35,7 @@ export default async function Home() {
             <RankingsTable players={players} />
           </div>
           <div>
-            <MatchesCards />
+            <MatchesCards matches={matches} />
           </div>
         </div>
       </main>
