@@ -1,4 +1,4 @@
-import PlayerComponent from '@/components/player/PlayerComponent';
+import PlayerComponent from '../../../components/player/PlayerComponent';
 import { getMatchesByPlayerId, getPlayerById } from '@/lib/services/dataService';
 import { Metadata } from 'next';
 
