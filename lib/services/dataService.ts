@@ -63,3 +63,41 @@ export const getMatches = async () => {
     throw new Error('Error fetching matches');
   }
 };
+
+// Función para obtener partidos por ID de jugador
+export const getMatchesByPlayerId = async (playerId: number) => {
+  try {
+    const matches = await db.match.findMany({
+      where: {
+        OR: [
+          { player1Id: playerId }, // Busca si el jugador es player1
+          { player2Id: playerId }, // Busca si el jugador es player2
+        ],
+      },
+      include: {
+        player1: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+        player2: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+        winner: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+      },
+    });
+    return matches;
+  } catch (error) {
+    console.error('Error fetching matches by player ID:', error);
+    throw new Error('Error fetching matches by player ID');
+  }
+};

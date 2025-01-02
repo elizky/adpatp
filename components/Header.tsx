@@ -1,13 +1,14 @@
 import Image from 'next/image';
 import { auth } from '@/auth';
 import { SignIn, SignOut } from './Login';
+import Link from 'next/link';
 
 export default async function Header() {
   const session = await auth();
   return (
     <header className='border-b border-border'>
       <div className='container mx-auto px-4 py-4 flex justify-between '>
-        <div className='flex items-center gap-4'>
+        <Link className='flex items-center gap-4' href='/'>
           <Image
             className='dark:invert'
             src='/tennis.svg'
@@ -17,7 +18,7 @@ export default async function Header() {
             priority
           />
           <h1 className='text-xl font-semibold font-sans'>ADP ATP</h1>
-        </div>
+        </Link>
         {!session ? <SignIn /> : <SignOut />}
       </div>
     </header>

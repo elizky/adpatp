@@ -29,7 +29,12 @@ export default function MatchCard({ match }: { match: Match }) {
                 />
                 <AvatarFallback>{match.player1.name}</AvatarFallback>
               </Avatar>
-              <span className='font-medium'>{match.player1.name}</span>
+              <span className='font-medium'>
+                {match.player1.name}
+                {match.winnerId === match.player1.id && (
+                  <span className='ml-2 text-green-500'>🎾</span>
+                )}
+              </span>
             </div>
             <div className='flex gap-2'>
               {match.player1Games.map((score, i) => (
@@ -63,7 +68,12 @@ export default function MatchCard({ match }: { match: Match }) {
                 />
                 <AvatarFallback>{match.player2.name}</AvatarFallback>
               </Avatar>
-              <span className='font-medium'>{match.player2.name}</span>
+              <span className='font-medium'>
+                {match.player2.name}
+                {match.winnerId === match.player2.id && (
+                  <span className='ml-2 text-green-500'>🎾</span>
+                )}
+              </span>
             </div>
             <div className='flex gap-2'>
               {match.player2Games.map((score, i) => (

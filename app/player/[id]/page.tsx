@@ -1,5 +1,5 @@
-import PlayerComponent from '@/components/Player/PlayerComponent';
-import { getPlayerById } from '@/lib/services/dataService';
+import PlayerComponent from '@/components/player/PlayerComponent';
+import { getMatchesByPlayerId, getPlayerById } from '@/lib/services/dataService';
 import { Metadata } from 'next';
 
 type Props = {
@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { id } = await params;
   const player = await getPlayerById(Number(id));
+  const matchesPlayed = await getMatchesByPlayerId(Number(id));
 
   if (!player) {
     return <div>Player not found</div>;
@@ -24,7 +25,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className=''>
-      <PlayerComponent player={player} />
+      <PlayerComponent player={player} matchesPlayed={matchesPlayed} />
     </div>
   );
 }
