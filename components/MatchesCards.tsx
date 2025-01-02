@@ -7,7 +7,6 @@ interface MatchesCardProps {
 }
 
 export default function MatchesCards({ matches }: MatchesCardProps) {
-  console.log('matches', matches)
   return (
     <Card className='bg-card'>
       <CardHeader className='flex flex-row items-center justify-between'>
