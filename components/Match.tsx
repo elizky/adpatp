@@ -1,11 +1,20 @@
+'use client'
 import { Match } from '@/types/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
+import { Pencil } from 'lucide-react';
+import { Button } from './ui/button';
+import { useModal } from '@/lib/ModalContext';
 
-export default function MatchCard({ match }: { match: Match }) {
+interface MatchCardProps {
+  match: Match;
+  isAdmin: boolean;
+}
+
+export default function MatchCard({ match, isAdmin }: MatchCardProps) {
   const hasSuperTiebreak = match.superTiebreak.length > 0;
+  const { openModal } = useModal();
 
-  // Función para poner en negrita el número del ganador
   const getBoldScore = (player1Score: number, player2Score: number) => {
     if (player1Score > player2Score) {
       return 'font-black text-primary';
@@ -17,10 +26,14 @@ export default function MatchCard({ match }: { match: Match }) {
     <Card>
       <CardHeader className='flex flex-row items-center justify-between'>
         {match.location}
+        {isAdmin && (
+          <Button size='icon' variant='outline' onClick={openModal}>
+            <Pencil className='h-4 w-4' />
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <div className='space-y-2'>
-          {/* Información de Player 1 */}
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <Avatar className='h-8 w-8'>
@@ -100,7 +113,7 @@ export default function MatchCard({ match }: { match: Match }) {
         </div>
       </CardContent>
       <CardFooter className='text-muted-foreground text-xs font-mono'>
-        {new Date(match.date).toLocaleString()}
+        {/* {new Date(match.date).toLocaleString()} */}
       </CardFooter>
     </Card>
   );
