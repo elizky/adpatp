@@ -1,9 +1,14 @@
 'use client';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
+import { saveMatchAction } from '@/actions/match-actions';
 
-import { Dispatch, SetStateAction, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Player } from '@/types/types';
+import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -18,20 +23,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Player } from '@/types/types';
 import PlayerScoreInput from './PlayerScoreInput';
-import { useModal } from '@/lib/ModalContext';
-import { saveMatchAction } from '@/actions/match-actions';
 
 interface MatchFormProps {
   players: Player[];
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  fetchData: () => Promise<void>;
 }
 
-export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps) {
-  const { closeModal } = useModal();
+export default function MatchForm({ players, fetchData }: MatchFormProps) {
   const [formData, setFormData] = useState({
     location: '',
     player1: '',
@@ -39,6 +38,9 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
     player1Scores: ['', '', ''],
     player2Scores: ['', '', ''],
   });
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Filtrar jugadores para que no se repitan
   const availablePlayersForPlayer2 = players.filter(
@@ -50,7 +52,7 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('formData', formData);
+    setLoading(true);
 
     try {
       await saveMatchAction({
@@ -62,9 +64,7 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
       });
 
       console.log('Match saved successfully');
-      closeModal();
 
-      // Reset form data
       setFormData({
         location: '',
         player1: '',
@@ -72,23 +72,31 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
         player1Scores: ['', '', ''],
         player2Scores: ['', '', ''],
       });
+      setLoading(false);
+      setOpen(false);
+      fetchData();
     } catch (error) {
       console.error('Failed to save match:', error);
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className='w-10/12 sm:max-w-[500px]'>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className='w-full mb-6'>+ Add Tennis Match Result</Button>
+      </DialogTrigger>
+      <DialogContent className={`w-10/12 sm:max-w-[500px]`}>
         <DialogHeader>
           <DialogTitle>Add Tennis Match Result</DialogTitle>
         </DialogHeader>
+
         <DialogDescription>Add the results for the match</DialogDescription>
         <form onSubmit={handleSubmit} className='space-y-6'>
           <div className='space-y-4'>
             <div className='space-y-2'>
               <Label htmlFor='location'>Location</Label>
               <Input
+                disabled={loading}
                 id='location'
                 placeholder='Club de Tenis Buenos Aires'
                 value={formData.location}
@@ -100,6 +108,7 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
             <div className='space-y-2'>
               <Label>Player 1</Label>
               <Select
+                disabled={loading}
                 value={formData.player1}
                 onValueChange={(value) => setFormData({ ...formData, player1: value })}
               >
@@ -127,6 +136,7 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
             <div className='space-y-2'>
               <Label>Player 2</Label>
               <Select
+                disabled={loading}
                 value={formData.player2}
                 onValueChange={(value) => setFormData({ ...formData, player2: value })}
               >
@@ -174,8 +184,8 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
             )}
           </div>
 
-          <Button type='submit' className='w-full'>
-            Save Match Result
+          <Button type='submit' className='w-full' disabled={loading}>
+            {loading ? <Loader className=' animate-spin h-4 w-4' /> : 'Save Match Result'}
           </Button>
         </form>
       </DialogContent>

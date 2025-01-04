@@ -19,6 +19,7 @@ export async function cleanUpPlayerMatches() {
 
     // Si también deseas eliminar todos los partidos en la base de datos (opcional)
     await prisma.match.deleteMany({});
+    await prisma.rankingHistory.deleteMany({});
 
     console.log('Datos de partidos limpiados exitosamente para los jugadores');
   } catch (error) {

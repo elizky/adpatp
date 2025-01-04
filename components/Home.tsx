@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import MatchFormButton from './forms/MatchFormButton';
+import MatchForm from './forms/MatchForm';
 import MatchesCards from './MatchesCards';
 import RankingsTable from './RankingTable';
 import { Match, Player } from '@/types/types';
@@ -29,6 +29,7 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -36,19 +37,17 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
   if (loading) {
     return <Loading />;
   }
-  console.log('matches', matches)
+  console.log('matches', matches);
 
   return (
     <div className='min-h-screen bg-background'>
       <main className='container mx-auto px-4 py-6'>
-        {isAdmin && <MatchFormButton players={players} />}
+        {isAdmin && <MatchForm players={players} fetchData={fetchData} />}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           <div className={`lg:col-span-2 ${matches.length === 0 && 'lg:col-span-3'}`}>
             <RankingsTable players={players} />
           </div>
-          <div>
-            <MatchesCards matches={matches} isAdmin={isAdmin} />
-          </div>
+          <div>{matches.length > 0 && <MatchesCards matches={matches} isAdmin={isAdmin} />}</div>
         </div>
       </main>
     </div>

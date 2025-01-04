@@ -17,6 +17,8 @@ interface RankingsTableProps {
 
 export default function RankingsTable({ players }: RankingsTableProps) {
   const rankedPlayers = players.sort((a, b) => a.ranking - b.ranking);
+
+  console.log('rankedPlayers', rankedPlayers);
   return (
     <div className='rounded-lg border bg-card'>
       <div className='flex items-center justify-between p-4'>

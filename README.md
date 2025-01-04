@@ -1,10 +1,8 @@
 
 ### My tasks
-- [ ] Update Google Provider variables
-- [ ] Test Google log in
-- [ ] Adjust Dashboard UI
-- [ ] Create Training day page
-    - [ ] Select any not finished exercise
-    - [ ] See tracking
-- [ ] Create planning in db
-- [ ] Upload planning in db
+- Edit and Delete matches
+- Create arrow icon in ranking when the players ranking changed 
+- Table last update date has to be the same as last matched loaded
+
+## Issues
+- Issues with ranking history chart - i have to invert the chart

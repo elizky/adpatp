@@ -18,6 +18,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function LineChartComponent({ data }: { data: Array<{ month: string; ranking: number }> }) {
+  console.log('data', data);
   return (
     <div>
       <h3 className='font-mono text-lg font-semibold mb-6 text-center'>History Ranking</h3>
