@@ -1,11 +1,26 @@
+'use client';
 import { Match } from '@/types/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
+import { Pencil } from 'lucide-react';
+import { Button } from './ui/button';
+import { useModal } from '@/lib/ModalContext';
 
-export default function MatchCard({ match }: { match: Match }) {
-  const hasSuperTiebreak = match.superTiebreak.length > 0;
+interface MatchCardProps {
+  match: Match;
+  isAdmin: boolean;
+}
 
-  // Función para poner en negrita el número del ganador
+export default function MatchCard({ match, isAdmin }: MatchCardProps) {
+  const { openModal } = useModal();
+
+  const hasSuperTiebreak = match.superTiebreak[0] > 0 || match.superTiebreak[1] > 0;
+
+  // Create a constant to splice games if there is no super tiebreak
+  const [player1Games, player2Games] = hasSuperTiebreak
+    ? [match.player1Games, match.player2Games]
+    : [match.player1Games.slice(0, -1), match.player2Games.slice(0, -1)];
+
   const getBoldScore = (player1Score: number, player2Score: number) => {
     if (player1Score > player2Score) {
       return 'font-black text-primary';
@@ -17,10 +32,14 @@ export default function MatchCard({ match }: { match: Match }) {
     <Card>
       <CardHeader className='flex flex-row items-center justify-between'>
         {match.location}
+        {isAdmin && (
+          <Button size='icon' variant='outline' onClick={openModal}>
+            <Pencil className='h-4 w-4' />
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <div className='space-y-2'>
-          {/* Información de Player 1 */}
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
               <Avatar className='h-8 w-8'>
@@ -37,25 +56,14 @@ export default function MatchCard({ match }: { match: Match }) {
               </span>
             </div>
             <div className='flex gap-2'>
-              {match.player1Games.map((score, i) => (
+              {player1Games.map((score, i) => (
                 <span
                   key={i}
-                  className={`w-6 text-center  ${getBoldScore(score, match.player2Games[i])}`}
+                  className={`w-6 text-center  ${getBoldScore(score, player2Games[i])}`}
                 >
                   {score}
                 </span>
               ))}
-              {/* Mostrar super tiebreak si existe */}
-              {hasSuperTiebreak && (
-                <span
-                  className={`w-6 text-center  ${getBoldScore(
-                    match.superTiebreak[0],
-                    match.superTiebreak[1]
-                  )}`}
-                >
-                  {match.superTiebreak[0]}
-                </span>
-              )}
             </div>
           </div>
 
@@ -76,25 +84,14 @@ export default function MatchCard({ match }: { match: Match }) {
               </span>
             </div>
             <div className='flex gap-2'>
-              {match.player2Games.map((score, i) => (
+              {player2Games.map((score, i) => (
                 <span
                   key={i}
-                  className={`w-6 text-center  ${getBoldScore(score, match.player1Games[i])}`}
+                  className={`w-6 text-center  ${getBoldScore(score, player1Games[i])}`}
                 >
                   {score}
                 </span>
               ))}
-              {/* Mostrar super tiebreak si existe */}
-              {hasSuperTiebreak && (
-                <span
-                  className={`w-6 text-center  ${getBoldScore(
-                    match.superTiebreak[1],
-                    match.superTiebreak[0]
-                  )}`}
-                >
-                  {match.superTiebreak[1]}
-                </span>
-              )}
             </div>
           </div>
         </div>

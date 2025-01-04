@@ -1,6 +1,6 @@
+'use server';
 import { db } from '@/server/db/prisma';
 
-// Función para obtener todos los jugadores
 export const getPlayers = async () => {
   try {
     const players = await db.player.findMany({
@@ -56,6 +56,9 @@ export const getMatches = async () => {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return matches;
   } catch (error) {
@@ -93,6 +96,9 @@ export const getMatchesByPlayerId = async (playerId: number) => {
             rankingHistory: true, // Incluye el historial de ranking
           },
         },
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
     return matches;

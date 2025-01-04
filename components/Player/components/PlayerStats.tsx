@@ -7,10 +7,12 @@ export function PlayerStats({ player }: { player: Player }) {
     100
   ).toFixed(1);
 
+  const displayWinRate = isNaN(Number(winRate)) ? 'N/A' : `${winRate}%`;
+
   return (
     <div className='grid grid-cols-2 gap-8'>
       <StatCard title='Current Ranking' value={`#${player.ranking}`} />
-      <StatCard title='Win Rate' value={`${winRate}%`} />
+      <StatCard title='Win Rate' value={`${displayWinRate}`} />
     </div>
   );
 }

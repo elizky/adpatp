@@ -1,5 +1,5 @@
+import { getMatchesByPlayerId, getPlayerById } from '@/actions/data-actions';
 import PlayerComponent from '@/components/Player/PlayerComponent';
-import { getMatchesByPlayerId, getPlayerById } from '@/lib/services/dataService';
 import { Metadata } from 'next';
 
 type Props = {
@@ -23,9 +23,5 @@ export default async function Page({ params }: Props) {
     return <div>Player not found</div>;
   }
 
-  return (
-    <div className=''>
-      <PlayerComponent player={player} matchesPlayed={matchesPlayed} />
-    </div>
-  );
+  return <PlayerComponent player={player} matchesPlayed={matchesPlayed} />;
 }

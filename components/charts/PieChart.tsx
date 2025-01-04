@@ -40,6 +40,17 @@ export function PieChartComponent({ title, chartData }: PieChartComponentProps) 
 
   const titleSplit = title.split(' ')[0];
 
+  console.log('chartData', chartData);
+
+  if (totalVisitors === 0) {
+    return (
+      <div className='flex flex-col h-full '>
+        <h3 className='font-mono text-lg font-semibold mb-6 text-center'>{title}</h3>
+        <p className='text-muted-foreground text-center text-sm pt-4 mt-16'>No data available</p>
+      </div>
+    );
+  }
+
   return (
     <div className='flex flex-col'>
       <h3 className='font-mono text-lg font-semibold mb-6 text-center'>{title}</h3>

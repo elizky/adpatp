@@ -104,14 +104,14 @@ model Match {
 
     player1Games  Int[] // Juegos ganados por Player1 en cada set
     player2Games  Int[] // Juegos ganados por Player2 en cada set
-    superTiebreak Int[] // Resultados del super tiebreak (player1, player2) [opcional]
+    superTiebreak Int[] @default([]) // Resultados del super tiebreak (player1, player2)
 
-    gamesWonByPlayer1     Int @default(0) // Total juegos ganados por Player1 (sin incluir tiebreak)
-    gamesWonByPlayer2     Int @default(0) // Total juegos ganados por Player2 (sin incluir tiebreak)
-    setsWonByPlayer1      Int @default(0) // Total sets ganados por Player1
-    setsWonByPlayer2      Int @default(0) // Total sets ganados por Player2
-    tiebreaksWonByPlayer1 Int @default(0) // Total tiebreaks ganados por Player1
-    tiebreaksWonByPlayer2 Int @default(0) // Total tiebreaks ganados por Player2
+    totalGamesPlayer1 Int @default(0) // Total de juegos ganados por Player1 (sin incluir tiebreak)
+    totalGamesPlayer2 Int @default(0) // Total de juegos ganados por Player2 (sin incluir tiebreak)
+    setsWonByPlayer1  Int @default(0) // Total de sets ganados por Player1
+    setsWonByPlayer2  Int @default(0) // Total de sets ganados por Player2
+
+    tiebreakWonByPlayer Int? // 1 si Player1 ganó el tiebreak, 2 si Player2 lo ganó (null si no hubo tiebreak)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
