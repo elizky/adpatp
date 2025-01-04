@@ -1,13 +1,13 @@
 export function calculateMatchResults(
   location: string,
-  player1Scores: string[],
-  player2Scores: string[],
+  player1Games: (string | number)[],
+  player2Games: (string | number)[],
   player1Id: string,
   player2Id: string
 ) {
   // Convertir los puntajes a números y manejar valores vacíos
-  const scores1 = player1Scores.map((score) => (score === '' ? null : parseInt(score, 10)));
-  const scores2 = player2Scores.map((score) => (score === '' ? null : parseInt(score, 10)));
+  const scores1 = player1Games.map((score) => (typeof score === 'string' && score === '' ? null : parseInt(score as string, 10)));
+  const scores2 = player2Games.map((score) => (typeof score === 'string' && score === '' ? null : parseInt(score as string, 10)));
 
   // Calcular sets ganados por cada jugador (solo sets válidos)
   const setsWonByPlayer1 = scores1.filter(
@@ -58,4 +58,4 @@ export function calculateMatchResults(
     setsWonByPlayer2,
     tiebreakWonByPlayer,
   };
-} 
+}

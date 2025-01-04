@@ -11,7 +11,7 @@ export function PlayerStats({ player }: { player: Player }) {
 
   return (
     <div className='grid grid-cols-2 gap-8'>
-      <StatCard title='Current Ranking' value={`#${player.ranking}`} />
+      <StatCard title='Ranking Actual' value={`#${player.ranking}`} />
       <StatCard title='Win Rate' value={`${displayWinRate}`} />
     </div>
   );

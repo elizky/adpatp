@@ -36,23 +36,21 @@ export default function PlayerComponent({ player, matchesPlayed }: PlayerCompone
     },
   ];
   return (
-    <div className=''>
-      <main className='container mx-auto py-8 px-4 space-y-8'>
-        <PlayerInfo player={player} />
+    <main className='container mx-auto py-8 px-4 space-y-8'>
+      <PlayerInfo player={player} />
 
-        <PlayerStats player={player} />
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-8'>
-          <RankingChart history={player.rankingHistory} />
-          <div className='space-y-4 mt-4'>
-            <PieChartComponent title='Games Won/Lost' chartData={playersGames} />
-          </div>
-          <div className='space-y-4 mt-4'>
-            <PieChartComponent title='Sets Won/Lost' chartData={playersSets} />
-          </div>
+      <PlayerStats player={player} />
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-8'>
+        <RankingChart history={player.rankingHistory} />
+        <div className='space-y-4 mt-4'>
+          <PieChartComponent title='Games Won/Lost' chartData={playersGames} />
         </div>
+        <div className='space-y-4 mt-4'>
+          <PieChartComponent title='Sets Won/Lost' chartData={playersSets} />
+        </div>
+      </div>
 
-        <MatchHistory matches={matchesPlayed} />
-      </main>
-    </div>
+      <MatchHistory matches={matchesPlayed} />
+    </main>
   );
 }

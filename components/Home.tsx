@@ -6,6 +6,7 @@ import RankingsTable from './RankingTable';
 import { Match, Player } from '@/types/types';
 import { getMatches, getPlayers } from '@/actions/data-actions';
 import Loading from '@/app/loading';
+import { useModal } from '@/lib/ModalContext';
 
 interface HomeProps {
   isAdmin: boolean;
@@ -15,6 +16,7 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
   const [players, setPlayers] = useState<Player[]>([]); // Asegúrate de definir bien el tipo de los jugadores
   const [matches, setMatches] = useState<Match[]>([]); // Asegúrate de definir bien el tipo de los partidos
   const [loading, setLoading] = useState(true);
+  const { isOpen, closeModal, setIsOpen, matchData } = useModal();
 
   const fetchData = async () => {
     try {
@@ -37,12 +39,20 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
   if (loading) {
     return <Loading />;
   }
-  console.log('matches', matches);
 
   return (
     <div className='min-h-screen bg-background'>
-      <main className='container mx-auto px-4 py-6'>
-        {isAdmin && <MatchForm players={players} fetchData={fetchData} />}
+      <main className='container mx-auto px-6 py-6'>
+        {isAdmin && (
+          <MatchForm
+            players={players}
+            fetchData={fetchData}
+            match={matchData}
+            isOpen={isOpen}
+            closeModal={closeModal}
+            setIsOpen={setIsOpen}
+          />
+        )}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           <div className={`lg:col-span-2 ${matches.length === 0 && 'lg:col-span-3'}`}>
             <RankingsTable players={players} />

@@ -21,5 +21,7 @@ export async function MatchHistory({ matches }: MatchHistoryProps) {
 }
 
 function NotMatches() {
-  return <p className='text-muted-foreground text-center text-sm pt-4'>Not matches yet...</p>;
+  return (
+    <p className='text-muted-foreground text-center text-sm pt-4'>No tiene partidos todavia...</p>
+  );
 }

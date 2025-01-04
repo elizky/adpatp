@@ -18,39 +18,38 @@ interface RankingsTableProps {
 export default function RankingsTable({ players }: RankingsTableProps) {
   const rankedPlayers = players.sort((a, b) => a.ranking - b.ranking);
 
-  console.log('rankedPlayers', rankedPlayers);
   return (
     <div className='rounded-lg border bg-card'>
       <div className='flex items-center justify-between p-4'>
-        <h2 className='text-lg font-semibold'>Ranking</h2>
+        <h2 className='text-lg font-bold font-mono'>Ranking</h2>
       </div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className='w-[60px]'>Rank</TableHead>
-            <TableHead>Player</TableHead>
+            <TableHead>Jugador</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {rankedPlayers.map((player) => (
             <TableRow key={player.ranking}>
-              <TableCell className='font-medium'>{player.ranking}</TableCell>
+              <TableCell className='font-bold text-base font-mono'>{player.ranking}</TableCell>
               <TableCell>
-                <div className='flex items-center gap-3'>
-                  <Avatar className='h-12 w-12'>
-                    <AvatarImage src={player.avatarUrl || `/tennis-player.svg`} />
-                    <AvatarFallback>{player.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <Link href={`/player/${player.id}`}>
-                    <div className='font-medium'>{player.name}</div>
-                  </Link>
-                </div>
+                <Link href={`/player/${player.id}`}>
+                  <div className='flex items-center gap-3 hover:text-primary'>
+                    <Avatar className='h-12 w-12'>
+                      <AvatarImage src={player.avatarUrl || `/tennis-player.svg`} />
+                      <AvatarFallback>{player.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className='font-medium text-base'>{player.name}</div>
+                  </div>
+                </Link>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
         <TableCaption className='pb-4'>
-          Last updated: {new Date().toLocaleDateString()}
+          Utlima actualizacion: {new Date().toLocaleDateString()}
         </TableCaption>
       </Table>
     </div>
