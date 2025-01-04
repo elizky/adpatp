@@ -33,14 +33,18 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
         <div className='sm:flex-1 self-center'>
           <div className='flex flex-col sm:flex-row justify-between items-center sm:items-start space-y-4 sm:space-y-0 text-center sm:text-left'>
             <div>
-              <h1 className='text-3xl font-bold text-primary font-mono'>{player.name}</h1>
-              {player.birthplace && <p className='text-gray-500 mt-1'>{player.birthplace}</p>}
+              <h1 className='text-3xl font-bold text-primary font-mono'>
+                {player.name || 'Nombre no disponible'}
+              </h1>
+              <p className='text-gray-500 mt-1'>
+                {player.birthplace || 'Lugar de nacimiento no disponible'}
+              </p>
             </div>
             {player.matchesWon.length > 0 && (
               <div className='flex items-center space-x-2 bg-primary px-4 py-2 rounded-full'>
                 <Trophy className='h-5 w-5 text-muted' />
                 <span className='font-semibold text-muted'>
-                  {player.matchesWon.length} Matches Won
+                  {player.matchesWon.length} Partidos Ganados
                 </span>
               </div>
             )}
@@ -49,26 +53,23 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
           <div className='mt-6 grid grid-cols-2 gap-x-4 gap-y-4'>
             <div className='flex items-center space-x-2 text-foreground'>
               <BicepsFlexed className='h-5 w-5 text-muted-foreground' />
-              <span>{player.handedness || 'Not specified'}</span>
+              <span>{player.handedness || 'Mano no disponible'}</span>
             </div>
 
-            {player.backhand && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Target className='h-5 w-5 text-muted-foreground' />
-                <span>{player.backhand}</span>
-              </div>
-            )}
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Target className='h-5 w-5 text-muted-foreground' />
+              <span>{player.backhand || 'Backhand no disponible'}</span>
+            </div>
+
             <div className='flex items-center space-x-2 text-foreground'>
               <Menu className='h-5 w-5 text-muted-foreground' />
-              <span>{player.racket || 'Not specified'}</span>
+              <span>{player.racket || 'N/A'}</span>
             </div>
 
-            {player.clothingBrand && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Shirt className='h-5 w-5 text-muted-foreground' />
-                <span>{player.clothingBrand}</span>
-              </div>
-            )}
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Shirt className='h-5 w-5 text-muted-foreground' />
+              <span>{player.clothingBrand || 'Marca de ropa no disponible'}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -77,56 +78,46 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
 
       <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
         <div className='space-y-4'>
-          <h3 className='font-semibold text-primary font-mono'>Physical Stats</h3>
+          <h3 className='font-semibold text-primary font-mono'>Stats Físicos</h3>
           <div className='space-y-2'>
-            {player.height && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Ruler className='h-4 w-4 text-muted-foreground' />
-                <span>Height: {player.height}cm</span>
-              </div>
-            )}
-            {player.weight && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Weight className='h-4 w-4 text-muted-foreground' />
-                <span>Weight: {player.weight}kg</span>
-              </div>
-            )}
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Ruler className='h-4 w-4 text-muted-foreground' />
+              <span>{`Altura: ${player.height ? player.height + 'cm' : '-'}`}</span>
+            </div>
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Weight className='h-4 w-4 text-muted-foreground' />
+              <span>{`Peso: ${player.weight ? player.weight + 'kg' : '-'}`}</span>
+            </div>
           </div>
         </div>
 
         <div className='space-y-4'>
-          <h3 className='font-semibold text-primary font-mono'>Playing Style</h3>
+          <h3 className='font-semibold text-primary font-mono'>Estilo de Juego</h3>
           <div className='space-y-2'>
-            {player.playStyle && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Target className='h-4 w-4 text-muted-foreground' />
-                <span>Style: {player.playStyle}</span>
-              </div>
-            )}
-            {player.favoriteShot && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Target className='h-4 w-4 text-muted-foreground' />
-                <span>Favorite Shot: {player.favoriteShot}</span>
-              </div>
-            )}
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Target className='h-4 w-4 text-muted-foreground' />
+              <span>Estilo: {player.playStyle ? player.playStyle : '-'}</span>
+            </div>
+
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Target className='h-4 w-4 text-muted-foreground' />
+              <span>Tiro Favorito: {player.favoriteShot ? player.favoriteShot : '-'}</span>
+            </div>
           </div>
         </div>
 
         <div className='space-y-4'>
           <h3 className='font-semibold text-primary font-mono'>Personal</h3>
           <div className='space-y-2'>
-            {player.favoritePlayer && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Heart className='h-4 w-4 text-muted-foreground' />
-                <span>Idol: {player.favoritePlayer}</span>
-              </div>
-            )}
-            {player.rivalries && (
-              <div className='flex items-center space-x-2 text-foreground'>
-                <Swords className='h-4 w-4 text-muted-foreground' />
-                <span>Rivalries: {player.rivalries}</span>
-              </div>
-            )}
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Heart className='h-4 w-4 text-muted-foreground' />
+              <span>Idolo: {player.favoritePlayer ? player.favoritePlayer : '-'}</span>
+            </div>
+
+            <div className='flex items-center space-x-2 text-foreground'>
+              <Swords className='h-4 w-4 text-muted-foreground' />
+              <span>Rivalidades: {player.rivalries ? player.rivalries : '-'}</span>
+            </div>
           </div>
         </div>
       </div>
