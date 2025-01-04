@@ -2,7 +2,13 @@
 
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -16,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Player } from '@/types/types';
 import PlayerScoreInput from './PlayerScoreInput';
 import { useModal } from '@/lib/ModalContext';
+import { saveMatchAction } from '@/actions/match-actions';
 
 interface MatchFormProps {
   players: Player[];
@@ -41,28 +48,43 @@ export default function MatchForm({ players, isOpen, setIsOpen }: MatchFormProps
     (player) => player.id.toString() !== formData.player2
   );
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('formData', formData);
-    closeModal();
-    // Reset form data
-    setFormData({
-      location: '',
-      player1: '',
-      player2: '',
-      player1Scores: ['', '', ''],
-      player2Scores: ['', '', ''],
-    });
+
+    try {
+      await saveMatchAction({
+        location: formData.location,
+        player1Id: formData.player1,
+        player2Id: formData.player2,
+        player1Scores: formData.player1Scores,
+        player2Scores: formData.player2Scores,
+      });
+
+      console.log('Match saved successfully');
+      closeModal();
+
+      // Reset form data
+      setFormData({
+        location: '',
+        player1: '',
+        player2: '',
+        player1Scores: ['', '', ''],
+        player2Scores: ['', '', ''],
+      });
+    } catch (error) {
+      console.error('Failed to save match:', error);
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className='w-10/12 sm:max-w-[500px]'>
+        <DialogHeader>
+          <DialogTitle>Add Tennis Match Result</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>Add the results for the match</DialogDescription>
         <form onSubmit={handleSubmit} className='space-y-6'>
-          <DialogHeader>
-            <DialogTitle>Add Tennis Match Result</DialogTitle>
-          </DialogHeader>
-
           <div className='space-y-4'>
             <div className='space-y-2'>
               <Label htmlFor='location'>Location</Label>

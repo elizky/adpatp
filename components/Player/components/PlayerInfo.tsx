@@ -36,12 +36,14 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
               <h1 className='text-3xl font-bold text-primary font-mono'>{player.name}</h1>
               {player.birthplace && <p className='text-gray-500 mt-1'>{player.birthplace}</p>}
             </div>
-            <div className='flex items-center space-x-2 bg-primary px-4 py-2 rounded-full'>
-              <Trophy className='h-5 w-5 text-muted' />
-              <span className='font-semibold text-muted'>
-                {player.matchesWon.length} Matches Won
-              </span>
-            </div>
+            {player.matchesWon.length > 0 && (
+              <div className='flex items-center space-x-2 bg-primary px-4 py-2 rounded-full'>
+                <Trophy className='h-5 w-5 text-muted' />
+                <span className='font-semibold text-muted'>
+                  {player.matchesWon.length} Matches Won
+                </span>
+              </div>
+            )}
           </div>
 
           <div className='mt-6 grid grid-cols-2 gap-x-4 gap-y-4'>

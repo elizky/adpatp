@@ -23,9 +23,5 @@ export default async function Page({ params }: Props) {
     return <div>Player not found</div>;
   }
 
-  return (
-    <div className=''>
-      <PlayerComponent player={player} matchesPlayed={matchesPlayed} />
-    </div>
-  );
+  return <PlayerComponent player={player} matchesPlayed={matchesPlayed} />;
 }

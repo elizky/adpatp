@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Match } from '@/types/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
@@ -12,8 +12,14 @@ interface MatchCardProps {
 }
 
 export default function MatchCard({ match, isAdmin }: MatchCardProps) {
-  const hasSuperTiebreak = match.superTiebreak.length > 0;
   const { openModal } = useModal();
+
+  const hasSuperTiebreak = match.superTiebreak[0] > 0 || match.superTiebreak[1] > 0;
+
+  // Create a constant to splice games if there is no super tiebreak
+  const [player1Games, player2Games] = hasSuperTiebreak
+    ? [match.player1Games, match.player2Games]
+    : [match.player1Games.slice(0, -1), match.player2Games.slice(0, -1)];
 
   const getBoldScore = (player1Score: number, player2Score: number) => {
     if (player1Score > player2Score) {
@@ -50,25 +56,14 @@ export default function MatchCard({ match, isAdmin }: MatchCardProps) {
               </span>
             </div>
             <div className='flex gap-2'>
-              {match.player1Games.map((score, i) => (
+              {player1Games.map((score, i) => (
                 <span
                   key={i}
-                  className={`w-6 text-center  ${getBoldScore(score, match.player2Games[i])}`}
+                  className={`w-6 text-center  ${getBoldScore(score, player2Games[i])}`}
                 >
                   {score}
                 </span>
               ))}
-              {/* Mostrar super tiebreak si existe */}
-              {hasSuperTiebreak && (
-                <span
-                  className={`w-6 text-center  ${getBoldScore(
-                    match.superTiebreak[0],
-                    match.superTiebreak[1]
-                  )}`}
-                >
-                  {match.superTiebreak[0]}
-                </span>
-              )}
             </div>
           </div>
 
@@ -89,31 +84,20 @@ export default function MatchCard({ match, isAdmin }: MatchCardProps) {
               </span>
             </div>
             <div className='flex gap-2'>
-              {match.player2Games.map((score, i) => (
+              {player2Games.map((score, i) => (
                 <span
                   key={i}
-                  className={`w-6 text-center  ${getBoldScore(score, match.player1Games[i])}`}
+                  className={`w-6 text-center  ${getBoldScore(score, player1Games[i])}`}
                 >
                   {score}
                 </span>
               ))}
-              {/* Mostrar super tiebreak si existe */}
-              {hasSuperTiebreak && (
-                <span
-                  className={`w-6 text-center  ${getBoldScore(
-                    match.superTiebreak[1],
-                    match.superTiebreak[0]
-                  )}`}
-                >
-                  {match.superTiebreak[1]}
-                </span>
-              )}
             </div>
           </div>
         </div>
       </CardContent>
       <CardFooter className='text-muted-foreground text-xs font-mono'>
-        {/* {new Date(match.date).toLocaleString()} */}
+        {new Date(match.date).toLocaleString()}
       </CardFooter>
     </Card>
   );
