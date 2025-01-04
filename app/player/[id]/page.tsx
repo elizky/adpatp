@@ -1,5 +1,5 @@
+import { getMatchesByPlayerId, getPlayerById } from '@/actions/data-actions';
 import PlayerComponent from '@/components/Player/PlayerComponent';
-import { getMatchesByPlayerId, getPlayerById } from '@/lib/services/dataService';
 import { Metadata } from 'next';
 
 type Props = {
