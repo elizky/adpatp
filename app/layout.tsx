@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   keywords: 'ADP, ATP',
   openGraph: {
     title: 'ADP ATP',
-    description: 'Manage your expenses and incomes with Calculizky',
-    url: 'www.calculizky.com',
+    description: 'Sigue en vivo los resultados del ADP ATP',
+    url: 'https://adpatp.vercel.app/',
     siteName: 'ADP ATP',
     locale: 'es_ES',
     type: 'website',
