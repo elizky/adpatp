@@ -1,4 +1,5 @@
 import { getMatchesByPlayerId, getPlayerById } from '@/actions/data-actions';
+import { auth } from '@/auth';
 import PlayerComponent from '@/components/Player/PlayerComponent';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
@@ -20,6 +21,10 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
   const player = await getPlayerById(Number(id));
   const matchesPlayed = await getMatchesByPlayerId(Number(id));
+  const session = await auth();
+  const isAdmin = session?.user.role === 'admin';
+
+  const isPlayer = session?.user.id === player?.userId;
 
   if (!player) {
     return (
@@ -36,5 +41,7 @@ export default async function Page({ params }: Props) {
     );
   }
 
-  return <PlayerComponent player={player} matchesPlayed={matchesPlayed} />;
+  return (
+    <PlayerComponent player={player} matchesPlayed={matchesPlayed} canEdit={isAdmin || isPlayer} />
+  );
 }
