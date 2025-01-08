@@ -1,5 +1,6 @@
 'use server';
 import { db } from '@/server/db/prisma';
+import { PlayerUpdateInput } from '@/types/types';
 
 export const getPlayers = async () => {
   try {
@@ -105,5 +106,22 @@ export const getMatchesByPlayerId = async (playerId: number) => {
   } catch (error) {
     console.error('Error fetching matches by player ID:', error);
     throw new Error('Error fetching matches by player ID');
+  }
+};
+
+// Función para actualizar la información de un jugador
+export const updatePlayer = async (playerId: number, data: PlayerUpdateInput) => {
+  console.log('{playerId, data}', { playerId, data });
+  try {
+    console.log('playerId', playerId);
+    const updatedPlayer = await db.player.update({
+      where: { id: playerId }, // Ensure the id is a number
+      data,
+    });
+
+    return updatedPlayer;
+  } catch (error) {
+    console.error('Error updating player:', error);
+    throw new Error('Error updating player');
   }
 };

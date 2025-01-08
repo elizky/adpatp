@@ -14,15 +14,17 @@ import {
 } from 'lucide-react';
 import { Separator } from '../../ui/separator';
 import { Card } from '../../ui/card';
+import EditPlayer from './EditPlayer';
 
 interface PlayerInfoProps {
   player: Player;
+  isAdmin: boolean;
 }
 
-export function PlayerInfo({ player }: PlayerInfoProps) {
+export function PlayerInfo({ player, isAdmin }: PlayerInfoProps) {
   return (
     <Card className='p-6'>
-      <div className='flex flex-col sm:flex-row items-start sm:space-x-6'>
+      <div className='flex flex-col sm:flex-row items-start sm:space-x-6 relative'>
         <Avatar className='h-32 w-32 self-center sm:self-baseline'>
           <AvatarImage src={player.avatarUrl || undefined} alt={player.name} />
           <AvatarFallback>
@@ -72,6 +74,7 @@ export function PlayerInfo({ player }: PlayerInfoProps) {
             </div>
           </div>
         </div>
+        {isAdmin && <EditPlayer player={player} />}
       </div>
 
       <Separator className='my-6' />

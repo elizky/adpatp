@@ -67,6 +67,23 @@ export interface Player {
   rankingHistory: RankingHistory[];
 }
 
+export type PlayerUpdateInput = Omit<
+  Player,
+  | 'ranking'
+  | 'avatarUrl'
+  | 'userId'
+  | 'gamesWon'
+  | 'gamesLost'
+  | 'setsWon'
+  | 'setsLost'
+  | 'tiebreaksWon'
+  | 'tiebreaksLost'
+  | 'matchesLost'
+  | 'id'
+  | 'rankingHistory'
+  | 'matchesWon'
+>;
+
 export interface MatchWon {
   id: number;
   date: Date | string;
