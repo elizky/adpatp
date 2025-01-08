@@ -8,10 +8,10 @@ import { PieChartComponent } from '../charts/PieChart';
 interface PlayerComponentProps {
   player: Player;
   matchesPlayed: Match[];
-  isAdmin: boolean;
+  canEdit: boolean;
 }
 
-export default function PlayerComponent({ player, matchesPlayed, isAdmin }: PlayerComponentProps) {
+export default function PlayerComponent({ player, matchesPlayed, canEdit }: PlayerComponentProps) {
   const playersGames = [
     {
       status: 'win',
@@ -38,7 +38,7 @@ export default function PlayerComponent({ player, matchesPlayed, isAdmin }: Play
   ];
   return (
     <main className='container mx-auto py-8 px-4 space-y-8'>
-      <PlayerInfo player={player} isAdmin={isAdmin} />
+      <PlayerInfo player={player} canEdit={canEdit} />
 
       <PlayerStats player={player} />
       <div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-8'>

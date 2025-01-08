@@ -111,9 +111,7 @@ export const getMatchesByPlayerId = async (playerId: number) => {
 
 // Función para actualizar la información de un jugador
 export const updatePlayer = async (playerId: number, data: PlayerUpdateInput) => {
-  console.log('{playerId, data}', { playerId, data });
   try {
-    console.log('playerId', playerId);
     const updatedPlayer = await db.player.update({
       where: { id: playerId }, // Ensure the id is a number
       data,

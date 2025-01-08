@@ -24,6 +24,8 @@ export default async function Page({ params }: Props) {
   const session = await auth();
   const isAdmin = session?.user.role === 'admin';
 
+  const isPlayer = session?.user.id === player?.userId;
+
   if (!player) {
     return (
       <main className='container mx-auto py-8 px-4'>
@@ -39,5 +41,7 @@ export default async function Page({ params }: Props) {
     );
   }
 
-  return <PlayerComponent player={player} matchesPlayed={matchesPlayed} isAdmin={isAdmin} />;
+  return (
+    <PlayerComponent player={player} matchesPlayed={matchesPlayed} canEdit={isAdmin || isPlayer} />
+  );
 }

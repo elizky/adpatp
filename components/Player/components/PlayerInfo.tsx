@@ -18,10 +18,10 @@ import EditPlayer from './EditPlayer';
 
 interface PlayerInfoProps {
   player: Player;
-  isAdmin: boolean;
+  canEdit: boolean;
 }
 
-export function PlayerInfo({ player, isAdmin }: PlayerInfoProps) {
+export function PlayerInfo({ player, canEdit }: PlayerInfoProps) {
   return (
     <Card className='p-6'>
       <div className='flex flex-col sm:flex-row items-start sm:space-x-6 relative'>
@@ -74,7 +74,7 @@ export function PlayerInfo({ player, isAdmin }: PlayerInfoProps) {
             </div>
           </div>
         </div>
-        {isAdmin && <EditPlayer player={player} />}
+        {canEdit && <EditPlayer player={player} />}
       </div>
 
       <Separator className='my-6' />
