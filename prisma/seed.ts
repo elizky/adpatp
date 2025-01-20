@@ -4,53 +4,79 @@ const prisma = new PrismaClient();
 
 async function resetAndSeedPlayers() {
   try {
-    // Eliminar todos los jugadores y sus dependencias
+    // Eliminar todas las dependencias de los partidos y el historial de rankings
     await prisma.rankingHistory.deleteMany({});
     await prisma.match.deleteMany({});
-    await prisma.player.deleteMany({});
 
-    console.log('Jugadores, partidos y rankingHistory eliminados.');
+    console.log('Partidos y rankingHistory eliminados.');
 
+    // Reiniciar estadísticas de jugadores manteniendo su información general
     const players = [
-      { name: 'Jaime', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Sawyer', ranking: 1 },
-      { name: 'Marcos', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Riley', ranking: 2 },
-      { name: 'Yeta', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Chase', ranking: 3 },
-      { name: 'Pela', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Jack', ranking: 4 },
-      { name: 'Jotu', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Leah', ranking: 5 },
-      { name: 'Second', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Aidan', ranking: 6 },
-      { name: 'Porte', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Jude', ranking: 7 },
-      { name: 'Izki', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Alexander', ranking: 8 },
-      { name: 'Rami', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Avery', ranking: 9 },
-      { name: 'Mo', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Eliza', ranking: 10 },
-      { name: 'Vier', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Kingston', ranking: 11 },
-      { name: 'Dilan', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Jessica', ranking: 12 },
-      { name: 'Abel', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Mackenzie', ranking: 13 },
-      { name: 'Enano', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Adrian', ranking: 14 },
-      { name: 'Guille', avatar: 'https://api.dicebear.com/9.x/bottts/svg?seed=Amaya', ranking: 15 },
+      { id: 1, name: 'Jaime', ranking: 1 },
+      { id: 2, name: 'Marcos', ranking: 2 },
+      { id: 3, name: 'Yeta', ranking: 3 },
+      { id: 4, name: 'Pela', ranking: 4 },
+      { id: 5, name: 'Jotu', ranking: 5 },
+      { id: 6, name: 'Second', ranking: 6 },
+      { id: 7, name: 'Porte', ranking: 7 },
+      { id: 8, name: 'Izki', ranking: 8 },
+      { id: 9, name: 'Rami', ranking: 9 },
+      { id: 10, name: 'Mo', ranking: 10 },
+      { id: 11, name: 'Vier', ranking: 11 },
+      { id: 12, name: 'Dilan', ranking: 12 },
+      { id: 13, name: 'Abel', ranking: 13 },
+      { id: 14, name: 'Enano', ranking: 14 },
+      { id: 15, name: 'Guille', ranking: 15 },
     ];
 
-    // Crear jugadores y su historial de ranking
     for (const player of players) {
-      const newPlayer = await prisma.player.create({
-        data: {
-          name: player.name,
-          avatarUrl: player.avatar,
-          ranking: player.ranking,
-        },
+      // Actualizar o crear jugadores
+      const existingPlayer = await prisma.player.findUnique({
+        where: { id: player.id },
       });
 
-      await prisma.rankingHistory.create({
-        data: {
-          playerId: newPlayer.id,
-          ranking: player.ranking,
-          date: new Date(),
-        },
-      });
+      if (existingPlayer) {
+        // Si el jugador ya existe, solo reiniciar estadísticas y ranking
+        await prisma.player.update({
+          where: { id: existingPlayer.id },
+          data: {
+            ranking: player.ranking,
+            gamesWon: 0,
+            gamesLost: 0,
+            setsWon: 0,
+            setsLost: 0,
+            tiebreaksWon: 0,
+            tiebreaksLost: 0,
+            matchesLost: 0,
+          },
+        });
+      } else {
+        // Si no existe, crear el jugador
+        const newPlayer = await prisma.player.create({
+          data: {
+            name: player.name,
+            ranking: player.ranking,
+          },
+        });
 
-      console.log(`Jugador creado: ${newPlayer.name} con ranking ${newPlayer.ranking}`);
+        console.log(`Jugador creado: ${newPlayer.name} con ranking ${newPlayer.ranking}`);
+      }
+
+      // Registrar el historial inicial de ranking
+      const playerData =
+        existingPlayer || (await prisma.player.findUnique({ where: { id: player.id } }));
+      if (playerData) {
+        await prisma.rankingHistory.create({
+          data: {
+            playerId: playerData.id,
+            ranking: player.ranking,
+            date: new Date(),
+          },
+        });
+      }
     }
 
-    console.log('Jugadores creados y rankingHistory inicial registrado.');
+    console.log('Jugadores reiniciados y rankingHistory inicial registrado.');
   } catch (error) {
     console.error('Error al reiniciar y poblar jugadores:', error);
     throw new Error('Error al reiniciar y poblar jugadores');

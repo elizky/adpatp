@@ -33,8 +33,8 @@ export default function MatchCard({ match, isAdmin }: MatchCardProps) {
 
   // Handle editing the match
   const handleEdit = () => {
-    setMatchData(match); // Pasa los datos del partido al contexto.
-    openModal(); // Abre el modal.
+    setMatchData(match);
+    openModal();
   };
 
   // Handle deleting the match
@@ -43,7 +43,7 @@ export default function MatchCard({ match, isAdmin }: MatchCardProps) {
   };
 
   return (
-    <Card>
+    <Card className=' rounded-none'>
       <CardHeader className='flex flex-row items-center justify-between'>
         {match.location}
         {isAdmin && (

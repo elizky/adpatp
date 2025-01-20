@@ -10,8 +10,8 @@ export function SignIn() {
         await signIn('google');
       }}
     >
-      <Button size='icon' variant='ghost' type='submit'>
-        <LogIn />
+      <Button className='px-0' size='sm' variant='ghost' type='submit'>
+        <LogIn /> Log In
       </Button>
     </form>
   );
@@ -25,8 +25,8 @@ export function SignOut() {
         await signOut();
       }}
     >
-      <Button  size='icon'variant='ghost' type='submit'>
-        <LogOut />
+      <Button className='px-0' size='sm' variant='ghost' type='submit'>
+        <LogOut /> Log Out
       </Button>
     </form>
   );
