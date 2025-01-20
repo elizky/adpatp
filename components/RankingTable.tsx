@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -19,11 +18,11 @@ export default function RankingsTable({ players }: RankingsTableProps) {
   const rankedPlayers = players.sort((a, b) => a.ranking - b.ranking);
 
   return (
-    <div className='rounded-lg border bg-card'>
-      <div className='flex items-center justify-between p-4'>
+    <div className='rounded-lg bg-card'>
+      <div className='flex items-center justify-between p-4 pl-0'>
         <h2 className='text-lg font-bold font-mono'>Ranking</h2>
       </div>
-      <Table>
+      <Table className='border'>
         <TableHeader>
           <TableRow>
             <TableHead className='w-[60px]'>Rank</TableHead>
@@ -48,9 +47,6 @@ export default function RankingsTable({ players }: RankingsTableProps) {
             </TableRow>
           ))}
         </TableBody>
-        <TableCaption className='pb-4'>
-          Utlima actualizacion: {new Date().toLocaleDateString()}
-        </TableCaption>
       </Table>
     </div>
   );

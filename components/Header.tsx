@@ -3,6 +3,13 @@ import { auth } from '@/auth';
 import { SignIn, SignOut } from './Login';
 import Link from 'next/link';
 import RulesModal from './RulesModal';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Menu } from 'lucide-react';
 
 export default async function Header() {
   const session = await auth();
@@ -20,10 +27,24 @@ export default async function Header() {
           />
           <h1 className='text-xl font-semibold font-sans'>ADP ATP</h1>
         </Link>
-        <div className='flex items-center gap-8'>
-        <RulesModal/>
-        {!session ? <SignIn /> : <SignOut />}
-        </div>
+
+        <RulesModal />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Menu />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {!session ? (
+              <DropdownMenuItem>
+                <SignIn />
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem>
+                <SignOut />
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
