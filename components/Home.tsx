@@ -65,16 +65,18 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
           </div>
           <div>{matches.length > 0 && <MatchesCards matches={matches} isAdmin={isAdmin} />}</div>
         </div>
-        <div className='mt-6'>
-          <div className='flex items-center justify-between p-4 pl-0'>
-            <h2 className='text-lg font-bold font-mono'> Ultimas Noticias</h2>
+        {posts.length > 0 && (
+          <div className='mt-6'>
+            <div className='flex items-center justify-between p-4 pl-0'>
+              <h2 className='text-lg font-bold font-mono'> Ultimas Noticias</h2>
+            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12'>
+              {posts.slice(-5).map((post) => (
+                <PostCard post={post} key={post.id} />
+              ))}
+            </div>
           </div>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12'>
-            {posts.slice(-5).map((post) => (
-              <PostCard post={post} key={post.id} />
-            ))}
-          </div>
-        </div>
+        )}
       </main>
     </div>
   );

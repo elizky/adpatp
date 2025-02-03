@@ -16,6 +16,7 @@ export default async function MatchesPage() {
       <h1 className='text-3xl font-bold font-mono mb-12'>Partidos</h1>
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12'>
+        {matches.length === 0 && <p className='text-muted-foreground'>Todavia no hay Partidos</p>}
         {matches.map((match) => (
           <MatchCard match={match} key={match.id} isAdmin={isAdmin} />
         ))}
