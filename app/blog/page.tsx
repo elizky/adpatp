@@ -1,26 +1,23 @@
 import { getBlogPosts } from '@/actions/blog-actions';
-import Link from 'next/link';
+import PostCard from '@/components/PostCard';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Noticias',
+};
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();
 
   return (
     <div className='container mx-auto p-6'>
-      <h1 className='text-3xl font-bold mb-4'>Blog</h1>
-      <Link href='/blog/create' className='mb-4 p-2 bg-blue-500 text-white rounded'>
-        Crear nuevo post
-      </Link>
-      <ul>
+      <h1 className='text-3xl font-bold font-mono mb-12'>Noticias</h1>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12'>
         {posts.map((post) => (
-          <li key={post.id} className='mb-4 p-4 border rounded shadow'>
-            <h2 className='text-xl font-semibold'>{post.title}</h2>
-            <p className='text-gray-500'>{new Date(post.createdAt).toLocaleDateString()}</p>
-            <Link href={`/blog/${post.id}`} className='text-blue-500'>
-              Leer más
-            </Link>
-          </li>
+          <PostCard post={post} key={post.id} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

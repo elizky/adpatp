@@ -158,3 +158,12 @@ export type MatchDetail = {
 export type PagesProps = {
   params: Promise<{ id: string }>;
 };
+
+export type Post = {
+  id: number;
+  title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  content: any;
+  createdAt: Date;
+  matchId: number;
+};
