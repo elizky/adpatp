@@ -103,3 +103,31 @@ export interface MatchWon {
   updatedAt: Date | string;
   playerId: number | null;
 }
+
+export type ContentSection =
+  | {
+      type: 'heading';
+      level: number;
+      content: string;
+    }
+  | {
+      type: 'paragraph';
+      content: string;
+    }
+  | {
+      type: 'image';
+      src: string;
+      alt: string;
+    }
+  | {
+      type: 'list';
+      items: string[];
+    }
+  | {
+      type: 'quote';
+      content: string;
+    };
+
+export type BlogPostContent = {
+  sections: ContentSection[];
+};
