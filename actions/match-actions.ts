@@ -4,6 +4,9 @@
 import { db } from '@/server/db/prisma';
 import { calculateMatchResults } from '@/utils/matchUtils';
 import { z } from 'zod';
+import { createBlogPost } from '@/actions/blog-actions';
+import { generateBlogPostContent } from './ia-actions';
+import { parseBlogPostContent } from '@/utils/postUtils';
 
 // Esquema de validación
 const matchSchema = z.object({
@@ -74,7 +77,7 @@ export async function saveMatchAction(props: SaveMatchActionProps) {
     if (!matchData.winnerId) throw new Error('Faltan datos obligatorios en matchData');
 
     // Crear partido y manejar actualizaciones en una transacción
-    return await db.$transaction(async (prisma) => {
+    const match = await db.$transaction(async (prisma) => {
       const match = await prisma.match.create({ data: matchData });
 
       // Intercambiar rankings si aplica
@@ -118,6 +121,38 @@ export async function saveMatchAction(props: SaveMatchActionProps) {
 
       return match;
     });
+
+    const postContent = await generateBlogPostContent({
+      player1: player1,
+      player2: player2,
+      winner: match.winnerId === player1.id ? player1.name : player2.name,
+      score: `${match.setsWonByPlayer1}-${match.setsWonByPlayer2}`,
+      date: match.date.toISOString(),
+      location: match.location || 'Ubicación no especificada',
+      setsWonByPlayer1: match.setsWonByPlayer1,
+      setsWonByPlayer2: match.setsWonByPlayer2,
+      totalGamesPlayer1: match.totalGamesPlayer1,
+      totalGamesPlayer2: match.totalGamesPlayer2,
+      tiebreakWonByPlayer: match.tiebreakWonByPlayer || undefined,
+      player1Games: player1Games.map(Number),
+      player2Games: player2Games.map(Number),
+      highlights: [
+        `Sets ganados por ${player1.name}: ${match.setsWonByPlayer1}`,
+        `Sets ganados por ${player2.name}: ${match.setsWonByPlayer2}`,
+        `Juegos totales de ${player1.name}: ${match.totalGamesPlayer1}`,
+        `Juegos totales de ${player2.name}: ${match.totalGamesPlayer2}`,
+      ],
+    });
+
+    const parsedContent = parseBlogPostContent(postContent);
+
+    // Crear el post asociado al partido
+    await createBlogPost(
+      parsedContent, // Contenido generado por IA
+      match.id // ID del partido
+    );
+
+    return match;
   } catch (error: any) {
     console.error('[SaveMatchAction] Error:', error.message, { stack: error.stack });
     throw new Error('Error al guardar el partido: ' + error.message);

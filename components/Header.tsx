@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Menu } from 'lucide-react';
@@ -34,6 +35,16 @@ export default async function Header() {
             <Menu />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Link href='/'> Inicio</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href='/matches'> Partidos</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href='/blog'> Noticias</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             {!session ? (
               <DropdownMenuItem>
                 <SignIn />

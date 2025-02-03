@@ -113,10 +113,11 @@ model Match {
 
     tiebreakWonByPlayer Int? // 1 si Player1 ganó el tiebreak, 2 si Player2 lo ganó (null si no hubo tiebreak)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    Player    Player?  @relation(fields: [playerId], references: [id])
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    Player    Player?    @relation(fields: [playerId], references: [id])
     playerId  Int?
+    BlogPost  BlogPost[]
 }
 
 model RankingHistory {
@@ -129,4 +130,13 @@ model RankingHistory {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+    id        Int      @id @default(autoincrement())
+    title     String
+    content   Json // JSON estructurado para almacenar el contenido
+    createdAt DateTime @default(now())
+    matchId   Int
+    match     Match    @relation(fields: [matchId], references: [id])
 }

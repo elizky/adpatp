@@ -123,3 +123,36 @@ export const updatePlayer = async (playerId: number, data: PlayerUpdateInput) =>
     throw new Error('Error updating player');
   }
 };
+
+// Función para obtener un partido único por ID
+export const getMatchById = async (matchId: number) => {
+  try {
+    const match = await db.match.findUnique({
+      where: { id: matchId }, // Busca el partido por ID
+      include: {
+        player1: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+        player2: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+        winner: {
+          include: {
+            matchesWon: true,
+            rankingHistory: true, // Incluye el historial de ranking
+          },
+        },
+      },
+    });
+    return match;
+  } catch (error) {
+    console.error('Error fetching match by ID:', error);
+    throw new Error('Error fetching match by ID');
+  }
+};

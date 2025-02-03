@@ -121,7 +121,7 @@ export default function MatchCard({ match, isAdmin }: MatchCardProps) {
         </div>
       </CardContent>
       <CardFooter className='text-muted-foreground text-xs font-mono'>
-        {new Date(match.date).toLocaleString()}
+        {match.date.toLocaleString('es')}
       </CardFooter>
     </Card>
   );

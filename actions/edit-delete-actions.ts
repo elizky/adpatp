@@ -131,9 +131,14 @@ export async function deleteMatchAction(matchId: number) {
     // Revertir estadísticas originales
     await revertMatchStats(match);
 
+    // Eliminar registros dependientes
+    await db.blogPost.deleteMany({
+      where: { matchId: matchId },
+    });
+
     // Eliminar el partido
     await db.match.delete({
-      where: { id: Number(matchId) },
+      where: { id: matchId },
     });
 
     return { success: true };

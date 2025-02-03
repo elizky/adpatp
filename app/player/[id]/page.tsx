@@ -1,15 +1,12 @@
 import { getMatchesByPlayerId, getPlayerById } from '@/actions/data-actions';
 import { auth } from '@/auth';
 import PlayerComponent from '@/components/Player/PlayerComponent';
+import { PagesProps } from '@/types/types';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PagesProps): Promise<Metadata> {
   const id = (await params).id;
   const player = await getPlayerById(Number(id));
   return {
@@ -17,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }: PagesProps) {
   const { id } = await params;
   const player = await getPlayerById(Number(id));
   const matchesPlayed = await getMatchesByPlayerId(Number(id));
