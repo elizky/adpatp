@@ -20,7 +20,6 @@ export async function generateBlogPostContent(matchDetails: MatchDetail): Promis
   }.
   
   Detalles adicionales:
-  - Duración del partido: No especificada (puedes añadir este campo si lo tienes).
   - Estadísticas clave:
     - Sets ganados: ${matchDetails.setsWonByPlayer1} (${matchDetails.player1.name}) vs ${
     matchDetails.setsWonByPlayer2
@@ -40,6 +39,46 @@ export async function generateBlogPostContent(matchDetails: MatchDetail): Promis
   - Estilos de juego:
     - ${matchDetails.player1.name}: ${matchDetails.player1.playStyle || 'Estilo no especificado'}
     - ${matchDetails.player2.name}: ${matchDetails.player2.playStyle || 'Estilo no especificado'}
+  - Tiro favorito:
+    - ${matchDetails.player1.name}: ${
+    matchDetails.player1.favoriteShot || 'Tiro favorito no especificado'
+  }
+    - ${matchDetails.player2.name}: ${
+    matchDetails.player2.favoriteShot || 'Tiro favorito no especificado'
+  }
+  - Raqueta:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.racket || 'Raqueta no especificada'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.racket || 'Raqueta no especificada'}
+  - Mano:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.handedness || 'Mano no especificada'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.handedness || 'Mano no especificada'}
+  - Revés:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.backhand || 'Reves no especificado'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.backhand || 'Reves no especificado'}
+  - Peso:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.weight || 'Peso no especificado'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.weight || 'Peso no especificado'}
+  - Altura:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.height || 'Altura no especificada'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.height || 'Altura no especificada'}
+  - Marca de ropa que lo viste:
+    - ${matchDetails.player1.name}: ${matchDetails.player1.clothingBrand || 'Marca no especificada'}
+    - ${matchDetails.player2.name}: ${matchDetails.player2.clothingBrand || 'Marca no especificada'}
+  - Lugar de nacimiento del jugador:
+    - ${matchDetails.player1.name}: ${
+    matchDetails.player1.birthplace || 'Lugar de nacimiento no especificado'
+  }
+    - ${matchDetails.player2.name}: ${
+    matchDetails.player2.birthplace || 'Lugar de nacimiento no especificado'
+  }
+  - Jugador Favorito:
+    - ${matchDetails.player1.name}: ${
+    matchDetails.player1.favoritePlayer || 'Jugador favorito no especificada'
+  }
+    - ${matchDetails.player2.name}: ${
+    matchDetails.player2.favoritePlayer || 'Jugador favorito no especificada'
+  }
+  
   - Rivalidad: ${
     matchDetails.player1.rivalries || matchDetails.player2.rivalries
       ? `Notas sobre rivalidades: ${
@@ -56,6 +95,7 @@ export async function generateBlogPostContent(matchDetails: MatchDetail): Promis
       { "type": "paragraph", "content": "Análisis del juego y momentos clave..." },
       { "type": "quote", "content": "Cita memorable del partido" },
       { "type": "paragraph", "content": "Contexto y significado del partido..." }
+      { "type": "quote", "content": "Reflexión final sobre el partido..." }
     ]
   }
   `;
