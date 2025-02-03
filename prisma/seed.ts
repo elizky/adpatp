@@ -10,24 +10,35 @@ async function resetAndSeedPlayers() {
 
     console.log('Partidos y rankingHistory eliminados.');
 
-    // Reiniciar estadísticas de jugadores manteniendo su información general
+    // Generar un array de rankings del 1 al 15
+    const rankings = Array.from({ length: 15 }, (_, i) => i + 1);
+
+    // Mezclar el array de rankings
+    for (let i = rankings.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rankings[i], rankings[j]] = [rankings[j], rankings[i]];
+    }
+
     const players = [
-      { id: 1, name: 'Jaime', ranking: 1 },
-      { id: 2, name: 'Marcos', ranking: 2 },
-      { id: 3, name: 'Yeta', ranking: 3 },
-      { id: 4, name: 'Pela', ranking: 4 },
-      { id: 5, name: 'Jotu', ranking: 5 },
-      { id: 6, name: 'Second', ranking: 6 },
-      { id: 7, name: 'Porte', ranking: 7 },
-      { id: 8, name: 'Izki', ranking: 8 },
-      { id: 9, name: 'Rami', ranking: 9 },
-      { id: 10, name: 'Mo', ranking: 10 },
-      { id: 11, name: 'Vier', ranking: 11 },
-      { id: 12, name: 'Dilan', ranking: 12 },
-      { id: 13, name: 'Abel', ranking: 13 },
-      { id: 14, name: 'Enano', ranking: 14 },
-      { id: 15, name: 'Guille', ranking: 15 },
-    ];
+      { id: 1, name: 'Jaime' },
+      { id: 2, name: 'Marcos' },
+      { id: 3, name: 'Yeta' },
+      { id: 4, name: 'Pela' },
+      { id: 5, name: 'Jotu' },
+      { id: 6, name: 'Second' },
+      { id: 7, name: 'Porte' },
+      { id: 8, name: 'Izki' },
+      { id: 9, name: 'Rami' },
+      { id: 10, name: 'Mo' },
+      { id: 11, name: 'Vier' },
+      { id: 12, name: 'Dilan' },
+      { id: 13, name: 'Abel' },
+      { id: 14, name: 'Enano' },
+      { id: 15, name: 'Guille' },
+    ].map((player, index) => ({
+      ...player,
+      ranking: rankings[index]
+    }));
 
     for (const player of players) {
       // Actualizar o crear jugadores
