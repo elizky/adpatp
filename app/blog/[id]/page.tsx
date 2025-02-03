@@ -1,9 +1,18 @@
-// app/blog/[id]/page.tsx
+import { Metadata } from 'next';
 import { getBlogPostById } from '@/actions/blog-actions';
-import { BlogPostContent } from '@/types/types';
+import { BlogPostContent, PagesProps } from '@/types/types';
 
-export default async function BlogPostPage({ params }: { params: { id: string } }) {
-  const post = await getBlogPostById(parseInt(params.id));
+export async function generateMetadata({ params }: PagesProps): Promise<Metadata> {
+  const id = (await params).id;
+  const post = await getBlogPostById(Number(id));
+  return {
+    title: post?.title,
+  };
+}
+
+export default async function BlogPostPage({ params }: PagesProps) {
+  const { id } = await params;
+  const post = await getBlogPostById(parseInt(id));
 
   if (!post) {
     return <div>Post no encontrado</div>;

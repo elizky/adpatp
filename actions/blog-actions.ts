@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use server';
 
 import { db } from '@/server/db/prisma';
@@ -27,18 +28,27 @@ export const getBlogPostById = async (id: number) => {
   }
 };
 
-export const createBlogPost = async (title: string, content: BlogPostContent, matchId: number) => {
+export const createBlogPost = async (content: BlogPostContent, matchId: number) => {
   try {
-    if (!title || !content || !matchId) {
-      throw new Error('Título, contenido y matchId son requeridos');
+    // Buscar el título en la primera sección de tipo 'heading'
+    const titleSection = content.sections.find((section) => section.type === 'heading');
+    const title = titleSection ? titleSection.content : 'Crónica sin título';
+
+    if (!matchId) {
+      throw new Error('El matchId es obligatorio.');
     }
 
     const newPost = await db.blogPost.create({
-      data: { title, content, matchId },
+      data: {
+        title,
+        content: content as unknown as any, // 🔹 Prisma espera un JSON, pero TypeScript puede quejarse
+        matchId,
+      },
     });
+
     return newPost;
-  } catch (error) {
-    console.error('Error creating blog post:', error);
-    throw new Error('Error creating blog post');
+  } catch (error: any) {
+    console.error('Error al crear el blog post:', error);
+    throw new Error(`Error al crear el blog post: ${error.message}`);
   }
 };
