@@ -1,102 +1,815 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
-async function resetAndSeedPlayers() {
-  try {
-    // Eliminar todas las dependencias de los partidos y el historial de rankings
-    await prisma.rankingHistory.deleteMany({});
-    await prisma.match.deleteMany({});
+// async function resetAndSeedPlayers() {
+//   try {
+//     // Eliminar todas las dependencias de los partidos y el historial de rankings
+//     await prisma.rankingHistory.deleteMany({});
+//     await prisma.match.deleteMany({});
+//     await prisma.player.deleteMany();
 
-    console.log('Partidos y rankingHistory eliminados.');
+//     console.log('Partidos, rankingHistory y  Players eliminados.');
 
-    // Generar un array de rankings del 1 al 15
-    const rankings = Array.from({ length: 15 }, (_, i) => i + 1);
+//     const playerList = [
+//       {
+//         id: 13,
+//         name: 'Abel',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Mackenzie',
+//         userId: 'cm6f38fb20000l5036hvnuluy',
+//         ranking: 12,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: null,
+//         handedness: null,
+//         backhand: null,
+//         clothingBrand: null,
+//         birthplace: null,
+//         favoriteShot: null,
+//         rivalries: null,
+//         playStyle: null,
+//         height: null,
+//         weight: null,
+//         favoritePlayer: null,
+//         createdAt: '2025-01-04T18:22:56.286Z',
+//         updatedAt: '2025-02-03T17:46:55.057Z',
+//       },
+//       {
+//         id: 1,
+//         name: 'Jaime',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Sawyer',
+//         userId: 'cm5muxbjq0000k403b0qdec4w',
+//         ranking: 13,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Babolat',
+//         handedness: 'Derecha ',
+//         backhand: 'No tengo ',
+//         clothingBrand: 'Varias ',
+//         birthplace: 'Choele Choel ',
+//         favoriteShot: 'Drive',
+//         rivalries: '',
+//         playStyle: '',
+//         height: 182,
+//         weight: 78,
+//         favoritePlayer: 'Rey David',
+//         createdAt: '2025-01-04T18:22:51.348Z',
+//         updatedAt: '2025-02-03T17:46:42.780Z',
+//       },
+//       {
+//         id: 5,
+//         name: 'Jorge',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Leah',
+//         userId: 'cm6plcmuv0000l803dw53vnro',
+//         ranking: 14,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Head',
+//         handedness: 'Derecha',
+//         backhand: 'Dos manos',
+//         clothingBrand: '',
+//         birthplace: 'Cordoba',
+//         favoriteShot: '',
+//         rivalries: '',
+//         playStyle: '',
+//         height: null,
+//         weight: null,
+//         favoritePlayer: '',
+//         createdAt: '2025-01-04T18:22:53.256Z',
+//         updatedAt: '2025-02-04T17:46:29.174Z',
+//       },
+//       {
+//         id: 10,
+//         name: 'Mo',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Eliza',
+//         userId: 'cm6pgkctx0000l503nva9rx6b',
+//         ranking: 1,
+//         gamesWon: 12,
+//         gamesLost: 6,
+//         setsWon: 2,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Babolat Aero Pro Drive',
+//         handedness: 'Derecha',
+//         backhand: 'Una mano',
+//         clothingBrand: '',
+//         birthplace: 'Cordoba, Argentina',
+//         favoriteShot: 'Saque',
+//         rivalries: '',
+//         playStyle: '',
+//         height: 182,
+//         weight: 60,
+//         favoritePlayer: '',
+//         createdAt: '2025-01-04T18:22:55.148Z',
+//         updatedAt: '2025-02-05T02:05:39.500Z',
+//       },
+//       {
+//         id: 3,
+//         name: 'Yeta',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Chase',
+//         userId: 'cm6phprst0000l503iry64w5s',
+//         ranking: 3,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Babolat Pure Strike',
+//         handedness: 'Derecha',
+//         backhand: 'Dos manos',
+//         clothingBrand: '',
+//         birthplace: 'Cordoba',
+//         favoriteShot: 'Drive',
+//         rivalries: '',
+//         playStyle: '',
+//         height: 171,
+//         weight: 95,
+//         favoritePlayer: 'El Rey 👑',
+//         createdAt: '2025-01-04T18:22:52.496Z',
+//         updatedAt: '2025-02-04T16:44:07.495Z',
+//       },
+//       {
+//         id: 9,
+//         name: 'Rami',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Avery',
+//         userId: 'cm6pgrz1o0001l503urdusz8g',
+//         ranking: 8,
+//         gamesWon: 6,
+//         gamesLost: 12,
+//         setsWon: 0,
+//         setsLost: 2,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 1,
+//         racket: null,
+//         handedness: null,
+//         backhand: null,
+//         clothingBrand: null,
+//         birthplace: null,
+//         favoriteShot: null,
+//         rivalries: null,
+//         playStyle: null,
+//         height: null,
+//         weight: null,
+//         favoritePlayer: null,
+//         createdAt: '2025-01-04T18:22:54.770Z',
+//         updatedAt: '2025-02-05T02:05:39.876Z',
+//       },
+//       {
+//         id: 7,
+//         name: 'Porte',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Jude',
+//         userId: 'cm5sypkqe0000kz03oyfz6l14',
+//         ranking: 4,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Wilson',
+//         handedness: 'Derecha',
+//         backhand: 'Dos manos',
+//         clothingBrand: 'Etiqueta Negra',
+//         birthplace: 'Floresta',
+//         favoriteShot: 'Drive cruzado',
+//         rivalries: 'Riber',
+//         playStyle: 'Flojo a muy flojo ',
+//         height: 170,
+//         weight: 66,
+//         favoritePlayer: 'Messi',
+//         createdAt: '2025-01-04T18:22:54.014Z',
+//         updatedAt: '2025-02-04T17:41:04.501Z',
+//       },
+//       {
+//         id: 12,
+//         name: 'Dilan',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Jessica',
+//         userId: null,
+//         ranking: 2,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: null,
+//         handedness: null,
+//         backhand: null,
+//         clothingBrand: null,
+//         birthplace: null,
+//         favoriteShot: null,
+//         rivalries: null,
+//         playStyle: null,
+//         height: null,
+//         weight: null,
+//         favoritePlayer: null,
+//         createdAt: '2025-01-04T18:22:55.909Z',
+//         updatedAt: '2025-02-03T17:46:53.618Z',
+//       },
+//       {
+//         id: 14,
+//         name: 'Enano',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Adrian',
+//         userId: 'cm6piy0jp0000i203p58c0gfi',
+//         ranking: 5,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Prestada',
+//         handedness: 'Diestro',
+//         backhand: 'Dos manos',
+//         clothingBrand: 'Sergio Tacchini',
+//         birthplace: 'Córdoba, Argentina',
+//         favoriteShot: 'Saque abierto',
+//         rivalries: 'Los del fondo',
+//         playStyle: 'Ladillero',
+//         height: 166,
+//         weight: 78,
+//         favoritePlayer: 'Adrián Mannarino / Justine Henin',
+//         createdAt: '2025-01-04T18:22:56.663Z',
+//         updatedAt: '2025-02-04T16:22:41.034Z',
+//       },
+//       {
+//         id: 11,
+//         name: 'Nico Vier ',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Kingston',
+//         userId: 'cm6qpqt8p0000l803xrjucda4',
+//         ranking: 6,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Prince ',
+//         handedness: 'Derecha ',
+//         backhand: 'Cómo salga ',
+//         clothingBrand: 'La salada ',
+//         birthplace: 'La docta ',
+//         favoriteShot: '',
+//         rivalries: '',
+//         playStyle: '',
+//         height: 179,
+//         weight: 0,
+//         favoritePlayer: '',
+//         createdAt: '2025-01-04T18:22:55.528Z',
+//         updatedAt: '2025-02-04T17:54:32.302Z',
+//       },
+//       {
+//         id: 8,
+//         name: 'Izky',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Alexander',
+//         userId: 'cm5by7fog000016g981eyuqls',
+//         ranking: 7,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Wilson Pro Staff',
+//         handedness: 'Derecha',
+//         backhand: 'Dos manos',
+//         clothingBrand: 'Adidas',
+//         birthplace: 'Cordoba, Argentina',
+//         favoriteShot: 'Drop',
+//         rivalries: 'Todos',
+//         playStyle: 'Lirico',
+//         height: 172,
+//         weight: 94,
+//         favoritePlayer: 'Nick Kyrgios',
+//         createdAt: '2025-01-04T18:22:54.391Z',
+//         updatedAt: '2025-02-03T17:46:49.322Z',
+//       },
+//       {
+//         id: 6,
+//         name: 'Second',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Aidan',
+//         userId: 'cm6pgdyff0000lb03jr6damt5',
+//         ranking: 9,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Babolat',
+//         handedness: 'Mucha',
+//         backhand: 'Poco',
+//         clothingBrand: 'Adidas',
+//         birthplace: 'Cordoba',
+//         favoriteShot: 'Globo',
+//         rivalries: '',
+//         playStyle: 'Ladilla',
+//         height: 183,
+//         weight: 92,
+//         favoritePlayer: 'Federer',
+//         createdAt: '2025-01-04T18:22:53.634Z',
+//         updatedAt: '2025-02-03T19:43:35.397Z',
+//       },
+//       {
+//         id: 15,
+//         name: 'Guille',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Amaya',
+//         userId: 'cm6phegys0000l503eglc1wfx',
+//         ranking: 10,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Head ',
+//         handedness: 'Derecha ',
+//         backhand: '2 manos ',
+//         clothingBrand: 'Adidas ',
+//         birthplace: 'Córdoba capital ',
+//         favoriteShot: 'Estúdiame no me voy a regalar así ',
+//         rivalries: 'Riber y Abel ',
+//         playStyle: 'Aguerrido ',
+//         height: null,
+//         weight: null,
+//         favoritePlayer: 'Lleyton Hewitt',
+//         createdAt: '2025-01-04T18:22:57.040Z',
+//         updatedAt: '2025-02-03T20:17:13.966Z',
+//       },
+//       {
+//         id: 2,
+//         name: 'Marcos',
+//         avatarUrl: 'https://api.dicebear.com/9.x/bottts/svg?seed=Riley',
+//         userId: 'cm5imts8u0000l703z179mvum',
+//         ranking: 11,
+//         gamesWon: 0,
+//         gamesLost: 0,
+//         setsWon: 0,
+//         setsLost: 0,
+//         tiebreaksWon: 0,
+//         tiebreaksLost: 0,
+//         matchesLost: 0,
+//         racket: 'Dunlop ',
+//         handedness: 'Derecha',
+//         backhand: 'Dos manos',
+//         clothingBrand: '',
+//         birthplace: 'Cba ',
+//         favoriteShot: 'Revés ',
+//         rivalries: '',
+//         playStyle: 'Versátil.-',
+//         height: 180,
+//         weight: 82,
+//         favoritePlayer: 'Fognini',
+//         createdAt: '2025-01-04T18:22:52.119Z',
+//         updatedAt: '2025-02-03T17:46:44.644Z',
+//       },
+//     ];
 
-    // Mezclar el array de rankings
-    for (let i = rankings.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [rankings[i], rankings[j]] = [rankings[j], rankings[i]];
-    }
+//     // const users = [
+//     //   {
+//     //     id: 'cm5by7fog000016g981eyuqls',
+//     //     name: 'Nicolas Gonzalez',
+//     //     email: 'nigd22@gmail.com',
+//     //     emailVerified: new Date('2024-12-31T04:08:24.370Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocLnjxlQRVatbWyAXPleBY9ErW0byTbbG0OjgMe1ZehR7Z4G3qrB7Q=s96-c',
+//     //     role: 'admin' as Role,
+//     //     createdAt: new Date('2024-12-31T04:08:23.585Z'),
+//     //     updatedAt: new Date('2024-12-31T04:13:00.556Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm5imts8u0000l703z179mvum',
+//     //     name: 'marcos conde',
+//     //     email: 'conde3743@gmail.com',
+//     //     emailVerified: new Date('2025-01-04T20:24:14.251Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocLsEvWzwELq3A8n0nBMTd2mQlESXFNgMCXIF3N5WSn_1BzvaQ=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-01-04T20:24:14.143Z'),
+//     //     updatedAt: new Date('2025-01-04T20:24:14.254Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm5muxbjq0000k403b0qdec4w',
+//     //     name: 'Agustín Pérez Demarchi',
+//     //     email: 'agustinperezdemarchi@gmail.com',
+//     //     emailVerified: new Date('2025-01-07T19:22:00.863Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocJr6NpWApKwyzcfkHOtOfpaB_1ooLC63I800fkj-HaIS7d7Ag=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-01-07T19:22:00.758Z'),
+//     //     updatedAt: new Date('2025-01-07T19:22:00.866Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm5sypkqe0000kz03oyfz6l14',
+//     //     name: 'Agustín Filgueira',
+//     //     email: 'agustinfmkt@gmail.com',
+//     //     emailVerified: new Date('2025-01-12T01:54:34.996Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocJSdB0aTQ8CdZK-9_V36SCtngMs85bsNc0Z5F0yn6FOR3mzFA=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-01-12T01:54:34.934Z'),
+//     //     updatedAt: new Date('2025-01-12T01:54:34.998Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6f38fb20000l5036hvnuluy',
+//     //     name: 'Abel Figueroa',
+//     //     email: 'abelfigueroa2@gmail.com',
+//     //     emailVerified: new Date('2025-01-27T13:32:08.771Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocLydcr-fDrwOH7i1odCOwig-8Y260g2ZH9pRUeOpDxp1u_eSn-hbQ=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-01-27T13:32:08.703Z'),
+//     //     updatedAt: new Date('2025-01-27T13:32:08.774Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6pgdyff0000lb03jr6damt5',
+//     //     name: 'Segundo Carranza Torres',
+//     //     email: 'segundo@carranzatorres.com.ar',
+//     //     emailVerified: new Date('2025-02-03T19:38:03.601Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocKHFVAa6UvnanFV9k_21GaMRsW7X7IHX70Qk9VdeXtdAfQ9tw=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T19:38:03.531Z'),
+//     //     updatedAt: new Date('2025-02-03T19:38:03.604Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6pgkctx0000l503nva9rx6b',
+//     //     name: 'Tomás Monguillot',
+//     //     email: 'tomimonguillot22@gmail.com',
+//     //     emailVerified: new Date('2025-02-03T19:43:02.192Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocJs_aAxRSPBXS2zssD9c3Cfvz2E3EiA4giLNIBWgkmb2McyFCiZ=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T19:43:02.133Z'),
+//     //     updatedAt: new Date('2025-02-03T19:43:02.193Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6pgrz1o0001l503urdusz8g',
+//     //     name: 'Ramiro Villada',
+//     //     email: 'ramivillada@gmail.com',
+//     //     emailVerified: new Date('2025-02-03T19:48:57.561Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocKncZQxg75IgEf5upoxlDPTcUjXYd6NUP2ZipdL4hJjm3wHrGnq=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T19:48:57.517Z'),
+//     //     updatedAt: new Date('2025-02-03T19:48:57.562Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6phegys0000l503eglc1wfx',
+//     //     name: 'guillermo ortega',
+//     //     email: 'guilleortega92@gmail.com',
+//     //     emailVerified: new Date('2025-02-03T20:06:27.236Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocLMNlHG4YGf7pW4LoMKtlhVlGlEzinXHfWvPStrFt3B9N0dnw=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T20:06:27.172Z'),
+//     //     updatedAt: new Date('2025-02-03T20:06:27.239Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6phprst0000l503iry64w5s',
+//     //     name: 'Nicolas Llenas',
+//     //     email: 'llenasnicolas@gmail.com',
+//     //     emailVerified: new Date('2025-02-03T20:15:14.497Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocJiM8dWBOytpB7ALzZKwDwfDsG12qwejbDPkMNglC_M886szvnR4g=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T20:15:14.429Z'),
+//     //     updatedAt: new Date('2025-02-03T20:15:14.499Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6piy0jp0000i203p58c0gfi',
+//     //     name: 'Santiago Facciano',
+//     //     email: 'santifacciano92@gmail.com',
+//     //     emailVerified: new Date('2025-02-03T20:49:38.683Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocIqpiXGHucx8tpGOZSjR-e20rAeQVg-gGukC5ljh3BhVjWYqnA-OQ=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T20:49:38.630Z'),
+//     //     updatedAt: new Date('2025-02-03T20:49:38.685Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6plcmuv0000l803dw53vnro',
+//     //     name: 'm gomes',
+//     //     email: 'jose_891@hotmail.com',
+//     //     emailVerified: new Date('2025-02-03T21:57:00.032Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocLZXJ5J5aT_oDqWKxqAFgHcIg_AxqDXyurNezyOla11laba96E=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-03T21:56:59.959Z'),
+//     //     updatedAt: new Date('2025-02-03T21:57:00.035Z'),
+//     //   },
+//     //   {
+//     //     id: 'cm6qpqt8p0000l803xrjucda4',
+//     //     name: 'Nicolas Vier',
+//     //     email: 'nicovi3r@gmail.com',
+//     //     emailVerified: new Date('2025-02-04T16:47:46.121Z'),
+//     //     password: null,
+//     //     image:
+//     //       'https://lh3.googleusercontent.com/a/ACg8ocK6WID8_SUbwKRtW87IvwkLgFBDqOBBZeTLKEC8dFU0J-pL4g=s96-c',
+//     //     role: 'user' as Role,
+//     //     createdAt: new Date('2025-02-04T16:47:46.057Z'),
+//     //     updatedAt: new Date('2025-02-04T16:47:46.124Z'),
+//     //   },
+//     // ];
 
-    const players = [
-      { id: 1, name: 'Jaime' },
-      { id: 2, name: 'Marcos' },
-      { id: 3, name: 'Yeta' },
-      { id: 4, name: 'Guille' },
-      { id: 5, name: 'Jotu' },
-      { id: 6, name: 'Second' },
-      { id: 7, name: 'Porte' },
-      { id: 8, name: 'Izki' },
-      { id: 9, name: 'Rami' },
-      { id: 10, name: 'Mo' },
-      { id: 11, name: 'Vier' },
-      { id: 12, name: 'Dilan' },
-      { id: 13, name: 'Abel' },
-      { id: 14, name: 'Enano' },
-    ].map((player, index) => ({
-      ...player,
-      ranking: rankings[index],
-    }));
+//     // const account = [
+//     //   {
+//     //     userId: 'cm5by7fog000016g981eyuqls',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '116381365593672959614',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0ARW5m74-_U5bLZz8s34gnlqXrOTjVJCBIupkvXgycDUBWmll6OK0jzQKz6rln7SuVQ0dlHyNJo7JMxxog2Ol49fqLiQ3Azk_zkmFAm2W1YvwRsxXJtXChlljPbvARV-ObVkAsbCIWwtnZz1Lz2IJek_TSkyV8EzSWRopzRVYaCgYKAYoSARISFQHGX2MiJvN3U-AFpAp2Wx4offdvhQ0175',
+//     //     expires_at: 1735621700,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImFiODYxNGZmNjI4OTNiYWRjZTVhYTc5YTc3MDNiNTk2NjY1ZDI0NzgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE2MzgxMzY1NTkzNjcyOTU5NjE0IiwiZW1haWwiOiJuaWdkMjJAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJpdWFCamZBWC15ZFYycGN0R1VsUkl3IiwibmFtZSI6Ik5pY29sYXMgR29uemFsZXoiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTG5qeGxRUlZhdGJXeUFYUGxlQlk5RXJXMGJ5VGJiRzBPamdNZTFaZWhSN1o0RzNxckI3UT1zOTYtYyIsImdpdmVuX25hbWUiOiJOaWNvbGFzIiwiZmFtaWx5X25hbWUiOiJHb256YWxleiIsImlhdCI6MTczNTYxODEwMSwiZXhwIjoxNzM1NjIxNzAxfQ.ru02wVI6zG5tQI70400ZjjloKRVGSW6KZsH2_7JxiFxNQ6jl2SAKNGxjJZXtXGIASQPgjev5BDxdkHumLkMp_Ut2ZcUAXxlbdz_qdB7O8u6hDBpk4FAxKjWrwmBDPLgZSOyVZl1MnnZ4yOO0nRylTgopkOFi4Tciha1xgKGd1Cz2y2UjZOMrWTFBw4uufuvsmwFfY3VZ0zY1ZJStHhV_1qkO24JD5NlkeN0OJW-iLudW94-TNdQRXOgqzIIal9zSuwQE8QTm3lcSOvc2oVvGKLaFcPxTTxRpgmmb61akwMVcVuhYgR1r-7vTBmPxg9uscJaibRedmPH6fRJnLVXw9g',
+//     //     session_state: null,
+//     //     createdAt: new Date('2024-12-31T04:08:23.958Z'),
+//     //     updatedAt: new Date('2024-12-31T04:08:23.958Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm5imts8u0000l703z179mvum',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '113361654061350413818',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0ARW5m76GqZRr7pT0YRXfl_A8QHbCbvT2AgBgIBzwc2ZqNYjY7SoPsPoZOucXa0Hkkq50JWUbnS39v8MzKaEszAu0HSmk7-1RBEk8q0I09dvZu3tDPiTtH_PKqOQuenOinU_eg8I1-20wNG0BM72CuONeRRxxqFieZ0pQ1YOLaCgYKAX0SARMSFQHGX2MikqtegjZEMRYgoKAN2sp_fQ0175',
+//     //     expires_at: 1736025852,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg5Y2UzNTk4YzQ3M2FmMWJkYTRiZmY5NWU2Yzg3MzY0NTAyMDZmYmEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEzMzYxNjU0MDYxMzUwNDEzODE4IiwiZW1haWwiOiJjb25kZTM3NDNAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJwZXhRZ2k5RzJqV2pETzJ4Tkg2ZkNBIiwibmFtZSI6Im1hcmNvcyBjb25kZSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMc0V2V3p3RUxxM0E4bjBuQk1UZDJtUWxFU1hGTmdNQ1hJRjNONVdTbl8xQnp2YVE9czk2LWMiLCJnaXZlbl9uYW1lIjoibWFyY29zIiwiZmFtaWx5X25hbWUiOiJjb25kZSIsImlhdCI6MTczNjAyMjI1MywiZXhwIjoxNzM2MDI1ODUzfQ.Kny5_uHbbkos6umLuSxM0n72cf22eaC4FcAbljCEAI0lvLcb5WEA_zOGyIsgqipMcAATRGQLKqwbALzd8qSEKFjhnklcDMVqiZFqftrk2HBiZFlSPgNswpTkYEBLU4aThEuzgiKYW6xgBEWtRMT-ozvreF5-QRrPE3wHar_mtb6uAqzmWLekAttzEQMFP0aYSU9yU3Y612_MXpCETCeNyeEoTcUhaS20-8M09YpRsynhiYFMmu0nttTz0u4CoAC1x0QaasxeOTF7z8fetS955rjN84cDO0-ZI_FZMW8Y5jmkxqc12BKKBj42LqBctybjE1NdW5aJYAuJt__cLL6ZeQ',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-01-04T20:24:14.177Z'),
+//     //     updatedAt: new Date('2025-01-04T20:24:14.177Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm5muxbjq0000k403b0qdec4w',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '100045340811271933719',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0ARW5m75TOJ_L8ifdKFRfxdIwzpNl0ehSRF5rxHqxaMZieRZq_5CwfLPBWA70O56r7--NnT6A75qZ3Blm5iqLFLpemYtF2Uq7Y7ZfHXe3JcWrHPo4258QnZUlxU1SV0Gq4QkDhORnit-FARviG_QXCPvQyAYUDrW9tFXT5ldmaCgYKAc0SARISFQHGX2MiJmHLaBWMloBtT4qJUVfQKw0175',
+//     //     expires_at: 1736281319,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg5Y2UzNTk4YzQ3M2FmMWJkYTRiZmY5NWU2Yzg3MzY0NTAyMDZmYmEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAwMDQ1MzQwODExMjcxOTMzNzE5IiwiZW1haWwiOiJhZ3VzdGlucGVyZXpkZW1hcmNoaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IjNtMEcyVWNYdnBaaWRMbi1EXy11cHciLCJuYW1lIjoiQWd1c3TDrW4gUMOpcmV6IERlbWFyY2hpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pyNk5wV0FwS3d5emNma0hPdE9mcGFCXzFvb0xDNjNJODAwZmtqLUhhSVM3ZDdBZz1zOTYtYyIsImdpdmVuX25hbWUiOiJBZ3VzdMOtbiIsImZhbWlseV9uYW1lIjoiUMOpcmV6IERlbWFyY2hpIiwiaWF0IjoxNzM2Mjc3NzIwLCJleHAiOjE3MzYyODEzMjB9.XiTArjhIkP9sDdbK2tFUlxRAVACv0mrf3EUfnNMV1IoX9mYjx8PbPOuNxKCkPkMcd-aLn8eYph4HSC067TPVJW1GSzHn0FcMRjscWq9ZlH8oU1oXSmByzWBcgJRKi65xdyGhgY93SCcRAIVlzqoiYQr7RHxSsyd6pCWJRwKtfteyXHZdr752suf3ERnnbwZ8GtDpmAK_0KNEOC7s07il5shYDzCPlQ9Sphz92njz3nfPeY0zEI4rAUXI8EwQBKteVXFnzXa6CN6FbWEEHbHgXVkoyEsuNOeKcsAXhR7AZRNl8_c6L7MsAok5RTW1gleNXvTWXZuDJkwEs5GTEO3x6g',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-01-07T19:22:00.793Z'),
+//     //     updatedAt: new Date('2025-01-07T19:22:00.793Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm5sypkqe0000kz03oyfz6l14',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '114913236822239801152',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0ARW5m77bBvGCBBcouTesnI4yjAZUJR_JogSd2oj_mxOi5QKceAoUxFYngCbG_ebfMgNXde2WrR-FY9_20GBXGrPaKooFYhfP4LmwerFLy3NHPbMRt7fIIE8b_4Agsg6OE0OdIxIqMqOeTqQ71yIdFlmEJK0ZIeQHSrhG_OHTaCgYKAV8SARISFQHGX2MiPxs4utTf3al9FjXrbm7E7w0175',
+//     //     expires_at: 1736650473,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImRkMTI1ZDVmNDYyZmJjNjAxNGFlZGFiODFkZGYzYmNlZGFiNzA4NDciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0OTEzMjM2ODIyMjM5ODAxMTUyIiwiZW1haWwiOiJhZ3VzdGluZm1rdEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Ii1QejdMcGM3ZXpqYmw0MmRXSXFocEEiLCJuYW1lIjoiQWd1c3TDrW4gRmlsZ3VlaXJhIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pTZEIwYVRROENkWkstOV9WMzZTQ3RuZ01zODVic05jMFo1RjB5bjZGT1IzbXpGQT1zOTYtYyIsImdpdmVuX25hbWUiOiJBZ3VzdMOtbiIsImZhbWlseV9uYW1lIjoiRmlsZ3VlaXJhIiwiaWF0IjoxNzM2NjQ2ODc0LCJleHAiOjE3MzY2NTA0NzR9.W5_XLld3K_yNVBH74K20Yq9e_g_DmrDs09LPvJy7boBZnABcLu2wjlUnt3CShXuFhVkDPo7xRaRLP-ZKzs5AzyCKWvsMYAni2ccR1QKkfdjnk2xrHJf0qtFNfY2yBXYAklPBV7qpG5SvQVeVGqPysK-VvJ31bt_827BhBJk9Bkfe-al1NqedosIqUSpRCIxiGRROZlmPi_cGFEUAXCJn0tnZ8v8Zcg1m-Gx3XGFpiEfDloyQHMcnETZfRxiC01FAXd5DW8rbQKK7rpZYp6Fx7TjzxhsA936cOv3Rdxp8ArBdFA73GXiePyU2vglhk3gJ8dOe130XgX6iLSokn_kIcA',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-01-12T01:54:34.967Z'),
+//     //     updatedAt: new Date('2025-01-12T01:54:34.967Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6f38fb20000l5036hvnuluy',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '109126506785033202825',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80RCpvDvzfomPSXRnAX_CfEJn27OUgd7gcV_EEE2oPYKLsBeTfSpmATpAkvpJsLJH_fobc_j8gVCDzjBvevC3w4nBVyvSLOYy2YO4UXz20l85glpkeZHx1-lHQPPB8U0eBlf3-SR7AqicJYZXMCH4k7eLeGwRyz8jxYVaCgYKAaISARESFQHGX2Mi1EzwC91b64LRyq3llPLiRQ0175',
+//     //     expires_at: 1737988327,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA5MTI2NTA2Nzg1MDMzMjAyODI1IiwiZW1haWwiOiJhYmVsZmlndWVyb2EyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoieVY3aU1hazJ0bEN0dF93bThXeGRTZyIsIm5hbWUiOiJBYmVsIEZpZ3Vlcm9hIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0x5ZGNyLWZEcndPSDdpMW9kQ093aWctOFkyNjBnMlpIOXBSVWVPcER4cDF1X2VTbi1oYlE9czk2LWMiLCJnaXZlbl9uYW1lIjoiQWJlbCIsImZhbWlseV9uYW1lIjoiRmlndWVyb2EiLCJpYXQiOjE3Mzc5ODQ3MjgsImV4cCI6MTczNzk4ODMyOH0.JBo9XmYQuCbNdKZdDf4soS3udkkcS19Z1ySTFtK2HIBRcX-YVV_pxSIgwG_ShNTJvCJsVJAQazyUYJL2tYBdJx39hClx-YOSPVgkyoAGJu4SxFPb6bRO6d3tuT-Jf6qkkzNx4ion_kttc2d3MRk7VlSrptb-QRG6kVmXIjICDiq3_ImnVMdSzokobb5yU-d2YvjhbtuoD4cV8oXUyhyJLrEFbfreDy4BIAedJGHXqgEnW0Wzuv8Nq8z25Hqii2ao2ySCi9dZR-S52a4-P0zCEn3cDFEi-yWIcJRMKYTpQszPirUxrFhjIv6BslOG_sZlR-6cFBfzuU-6soX8qfNgXg',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-01-27T13:32:08.739Z'),
+//     //     updatedAt: new Date('2025-01-27T13:32:08.739Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6pgdyff0000lb03jr6damt5',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '114855737557046721628',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80SeWONvQiv3jVKqg2kLROz3yU8Tf-iBVwLpLkrRMsGlVEU9OoqZRTcQLr2XLLyvt5fmzTxGF6_dRK4M61seCX09looOVNsbXCjJALP_5ffsArqeZZmZjz1XKek9WTaKi_NHJiH-SAeZUmkImYvwj0krDehgzOknXgX8aCgYKAegSARASFQHGX2MixhzZksFNlmqIFPsCO_upQg0175',
+//     //     expires_at: 1738615082,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0ODU1NzM3NTU3MDQ2NzIxNjI4IiwiaGQiOiJjYXJyYW56YXRvcnJlcy5jb20uYXIiLCJlbWFpbCI6InNlZ3VuZG9AY2FycmFuemF0b3JyZXMuY29tLmFyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJLSl9GcUZQZW1obkpjTlFzTlRkbUdBIiwibmFtZSI6IlNlZ3VuZG8gQ2FycmFuemEgVG9ycmVzIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0tIRlZBYTZVdm5hbkZWOWtfMjFHYU1Sc1c3WDdJSFg3MFFrOVZkZVh0ZEFmUTl0dz1zOTYtYyIsImdpdmVuX25hbWUiOiJTZWd1bmRvIiwiZmFtaWx5X25hbWUiOiJDYXJyYW56YSBUb3JyZXMiLCJpYXQiOjE3Mzg2MTE0ODMsImV4cCI6MTczODYxNTA4M30.mcFlezPx_gJc97ZPTLCKpp88gEQa77FRZ_QuPeORwxl5kfjkM0_R1dD8Dc7x5zJ1sODz_TpxDjxdUHvI3xTVH2QQAOZekcvTW0l4t9dNtNvMoYX_5DRyv1UbGnhr5qgM8DxgY8tskrxnvGzsIi_GI6LApP5wW-8SEfO0Zz6TV5d5r5BamFkdH3uzuhpFIoZaM6CqJQ94MZK4PXVevWR2KVnUvhbR9_h5RAJ2CnFdLho6MZrEvkP1KFnmrd_OFm0sBPrHgmn4thM416jjiqiMUBvNmNmqLem6MJpYILN_LCcu4BWQ8A_0BX_YKbALSUI7jadYmE62qUD0OwDeN9Mz6w',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T19:38:03.566Z'),
+//     //     updatedAt: new Date('2025-02-03T19:38:03.566Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6pgkctx0000l503nva9rx6b',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '117940787358924142370',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80SoTbsDG1b3B5dmVLmoiwW8rwgQ4YDgTsurT-JXxRMsHWYS5FTgsfqFPEx0NyK1t_mPSvn6mgAFN5MqDyDRfSZJ7LY7htm-zmVlqFVnFzIStCcWautXRwQS5tJ_bzDi6dlW0bgt15nrh4Nskmx0a5RWwS8C1nQu7nAqaCgYKAdcSARISFQHGX2Mi5Uu_U-Y7BHUgMVobgZKa1A0175',
+//     //     expires_at: 1738615380,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE3OTQwNzg3MzU4OTI0MTQyMzcwIiwiZW1haWwiOiJ0b21pbW9uZ3VpbGxvdDIyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoickFjVVBQaHRub0dPZEVPcmZJdzg5USIsIm5hbWUiOiJUb23DoXMgTW9uZ3VpbGxvdCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKc19hQXhSU1BCWFMyenNzRDljM0NmdnoyRTNFaUE0Z2lMTklCV2drbWIyTWN5RkNpWj1zOTYtYyIsImdpdmVuX25hbWUiOiJUb23DoXMiLCJmYW1pbHlfbmFtZSI6Ik1vbmd1aWxsb3QiLCJpYXQiOjE3Mzg2MTE3ODEsImV4cCI6MTczODYxNTM4MX0.EqbVn3ae1CK4wj1EtAj-mdj1LIQhv8uHFcQT6P6Q3L9m6JBymBIpzShg4BjYKuE-QIafE3HDAadfuXXgLGMU-RfXJrs5yBN8JQqCLOl8X9CGHOGNz0VLlMnMROQ7BaEgwgoWDZJGy0xS_TWXKrs8HDy5WjWerNpYtrCkN5RQ-00ouGVyxJ3VAvoFlXixZWDVY6uo1Vp97oYuTbKOj5XP2wLOvsCS6HCyo3sq8HDctrfQABD41NIJppcW6UoEyeLLNsDM3YwBAX0Ny_8w8BY-cO9cgMu6w-jZ5pS7plvLmsApk9c_Dfl-cxtUld7ChH6ZKn3wAw5IHSHNeleSvbzkEQ',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T19:43:02.163Z'),
+//     //     updatedAt: new Date('2025-02-03T19:43:02.163Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6pgrz1o0001l503urdusz8g',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '114600562625468129156',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80QSxBdeYu1UKLj59FDVDng390hOkti3dSa44OnvzxQqeuAxAhYX_TnzqKhTMaLmeJu77vN3t6-45g3JERzC9wXrIvI3z30G0_ZWYSPfFL4saGSIChzGRZIejNEND2t5z_DHAisgUfZEcLtU9Nl5mguIhq_7dfkCWBM5aCgYKAQMSARISFQHGX2MicXLPzSv0lnrAIdBJJXD6lg0175',
+//     //     expires_at: 1738615736,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE0NjAwNTYyNjI1NDY4MTI5MTU2IiwiZW1haWwiOiJyYW1pdmlsbGFkYUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlhRMF9Jcm10dHNfZmItSUc3LTVkb0EiLCJuYW1lIjoiUmFtaXJvIFZpbGxhZGEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS25jWlF4Zzc1SWdFZjV1cG94bERQVGNValhZZDZOVVAyWmlwZEw0aEpqbTN3SHJHbnE9czk2LWMiLCJnaXZlbl9uYW1lIjoiUmFtaXJvIiwiZmFtaWx5X25hbWUiOiJWaWxsYWRhIiwiaWF0IjoxNzM4NjEyMTM3LCJleHAiOjE3Mzg2MTU3Mzd9.pfuOjUzx4_71VDpACBQHlsn9nNHLMwv54xKqQ53sdl3VaJI1QBVF5btQFNse-YT_D2pF21Oh4qv6kPeK-9vxgLY9_kpzRYDlUZgujvPCa9IOZKeagVMN7LBYHarf72QvEWdGU79RvLyXCSh-awtNmqQRKvitOpas_jPneroy4hCk4yjsAoXiu8AuMFMzV4mPoeSWMejN7Jzi1kCwXlKHZD5dIRxdCe-35nA8csVRJsVgixclKA_DRyJXbQUshVCi5F56j3kRRXn93W1UJYpSnT0_RoGkSHfufw9uXHOakg6lbihmG2fn7eh7qd_7P2NHJqAQFgXP2yWoTQfeWmUAGA',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T19:48:57.539Z'),
+//     //     updatedAt: new Date('2025-02-03T19:48:57.539Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6phegys0000l503eglc1wfx',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '109230686248402079301',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80R6fzQHNAHbFIX1POABxDuAYfS7ReBYbTXay5Ll5mpNOb7A1fWemCaiYi08D_m6f3JUv_Hn56s5N89r4dRucVLsKjmU8oo5TogE50xYpdEFnqlooKzuExAuAU4lsUNuAVU_nXDnqlINterjixDBzfhZnC73SDghzi1waCgYKAX0SARESFQHGX2MiXkB5ZZVZTcdwyjmNbPwGJA0175',
+//     //     expires_at: 1738616785,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA5MjMwNjg2MjQ4NDAyMDc5MzAxIiwiZW1haWwiOiJndWlsbGVvcnRlZ2E5MkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Ik5uejB0bmhmNmNqR3RlVVM0NW9JYlEiLCJuYW1lIjoiZ3VpbGxlcm1vIG9ydGVnYSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMTU5sSEc0WUdmN3BXNExvTUt0bGhWbEdsRXppblhIZld2UFN0ckZ0M0I5TjBkbnc9czk2LWMiLCJnaXZlbl9uYW1lIjoiZ3VpbGxlcm1vIiwiZmFtaWx5X25hbWUiOiJvcnRlZ2EiLCJpYXQiOjE3Mzg2MTMxODYsImV4cCI6MTczODYxNjc4Nn0.DQe68-DrqFYLx2IBCgizKCaqogTp2qGyHtmS0f2xY5KYsYR4NIVywh0Tyk_E8SsIYdHrsiNaLCxeLrxFWvd-HtvcT-7ttedyGqethf8ySe8yif7Tj5ullonzVA-X9XXz51SW-jaIbTqwXZWX8KqBkulAXwNcCdrby3C0R_9vhD57sdkxFaKkZNfFLn2WhGgR2HVIrtB69NOCNriaM0FDhSL4HU1Rcyl3bAunHA0o3vS0n0RETkIExnOnZtDr3T59NJ_Ja-bfkGHs-oWWCd2XG_e8GMqK1bpCID_XzvEa8olWb9fW7kzuYr3BUhulaaVcmTFRalJgc-wfG7bghM5wiQ',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T20:06:27.206Z'),
+//     //     updatedAt: new Date('2025-02-03T20:06:27.206Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6phprst0000l503iry64w5s',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '112995470975586534784',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80RdgXVL8fhdChj8jwBtsQznknjBDkrVIe6xTRugsn_BY_lZVAorm2VegPeYbDGUUlstjH7iDfDs-PqUGsogCWoQFc46G53tLDLruNk0StkUS_A5FsiCEIj1USV-ElYRqUHkUM0ltl2BmDfHSmaAIx3k1XshXjya9WVvaCgYKAeISARISFQHGX2Mi4mEb6Dsqk4ZGOQhrq1UUtw0175',
+//     //     expires_at: 1738617313,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlYzUzNGZhNWI4Y2FjYTIwMWNhOGQwZmY5NmI1NGM1NjIyMTBkMWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEyOTk1NDcwOTc1NTg2NTM0Nzg0IiwiZW1haWwiOiJsbGVuYXNuaWNvbGFzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiZ1FoOHBISmVyRXdFSTVxUWJFV3YyZyIsIm5hbWUiOiJOaWNvbGFzIExsZW5hcyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKaU04ZFdCT3l0cEI3QUx6Wkt3RHdmRHNHMTJxd2VqYkRQa01OZ2xDX004ODZzenZuUjRnPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik5pY29sYXMiLCJmYW1pbHlfbmFtZSI6IkxsZW5hcyIsImlhdCI6MTczODYxMzcxNCwiZXhwIjoxNzM4NjE3MzE0fQ.yGIGQCC50F1ZFcADcmL8DmH6-_r_aoK9ilUVQJbpt97l6PThZ95-STh9gKTM_gV9KOZYtWdxpyEkDfwLhDbHZxK6nvTru-UNAFe5U09R4MQqM67L1PTrgUJuRgYjqjUYlwZs-a-4HE8SqZc4sXUHRL5AbMDD0P91Ni41wzz5rdgUUoTfjFk3ZCBwiC341KOYMN3QV6gDXtL0-fdLnDbNviUVyNfxmFd47akcJE8tj60CE9MsNh4pKaM-2hrWWi_Abx6f1f305YjGQElq0vq4SYeCo-2kl4pgrWLpbiFqXHGC1_V-653viPqTyTAMunmdntO4WLYXu-1BQl13tibpcQ',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T20:15:14.460Z'),
+//     //     updatedAt: new Date('2025-02-03T20:15:14.460Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6piy0jp0000i203p58c0gfi',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '115766492630567842653',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80RhoKjYyFdpXBxgBv6U8T-D7P2qcHmc0Wc2R1PsaTdoXV-KYvGJUAB3g6MjFUikTJWKlYkYmtJG_doqqOFymWfBbAo_dERBUTe0BXVUrJggOaa_d43jz4K6feBbFR4_qoURlhLlhro1rRNMh-f-trGNjDPYAqPadzfZaCgYKAS8SARMSFQHGX2MiuSHr1qf0b0JcH1v-jWbAXA0175',
+//     //     expires_at: 1738619377,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlYzUzNGZhNWI4Y2FjYTIwMWNhOGQwZmY5NmI1NGM1NjIyMTBkMWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE1NzY2NDkyNjMwNTY3ODQyNjUzIiwiZW1haWwiOiJzYW50aWZhY2NpYW5vOTJAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJTRVR4aDlpNmdySmpNSG54NXpNR2dnIiwibmFtZSI6IlNhbnRpYWdvIEZhY2NpYW5vIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lxcGlYR0h1Y3g4dHBHT1pTalItZTIwckFlUVZnLWdHdWtDNWxqaDNCaFZqV1lxbkEtT1E9czk2LWMiLCJnaXZlbl9uYW1lIjoiU2FudGlhZ28iLCJmYW1pbHlfbmFtZSI6IkZhY2NpYW5vIiwiaWF0IjoxNzM4NjE1Nzc4LCJleHAiOjE3Mzg2MTkzNzh9.l-FdhCcQy7VyjrL8oMkoS1PNrVbMpqG4Dzkso4XYQYv7DLH28AlXYBQ9tYfSpGQYfWS3Ta0y8zggepitB_81r9Tuuv2flv0oNpxSqP1L-nRVyFBXceWQLoNGSYsa-s_se54xj1UeiUmVCLUAOp-2djixml_sJsHznmniu0e3vtKg5pMa9yEWjzT3Jpj7T_0yI5AvMdzdMX-VT_vU05jZzJYn9xq3rizvbRVDHWYIavpjdhCCFAufCORMI_CDKxDvN6dnoxcifSbZVthzvIMC89n5QrTH7zs_6z0h7yKYCEgPXrzmC2K8ljaNT1C7YIxt40ix980bWSCzTPR4VRNHpA',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T20:49:38.658Z'),
+//     //     updatedAt: new Date('2025-02-03T20:49:38.658Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6plcmuv0000l803dw53vnro',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '118067392308405779563',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80RD1jYTHu8KuLdLF7KiwVscPkQkruM0xS7k8zouzVG59g7kNfL5_kT5Qy4Auu3da3TwZp-oB18UjiRJw1a357_o8xoGQ2n9aJA8opA8an8rY-Px_GZdWA8QnOLJH8hSoGr5Gb8xlrpsy0riWkFWDVD8pD_Vwy3pNHb4aCgYKAa8SARESFQHGX2Mii_xyIujiYqtAAVN9bfHmHQ0175',
+//     //     expires_at: 1738623418,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlYzUzNGZhNWI4Y2FjYTIwMWNhOGQwZmY5NmI1NGM1NjIyMTBkMWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE4MDY3MzkyMzA4NDA1Nzc5NTYzIiwiZW1haWwiOiJqb3NlXzg5MUBob3RtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiZ0xyUU5LTVJZVkV5NlltTTBManV4ZyIsIm5hbWUiOiJtIGdvbWVzIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xaWEo1SjVhVF9vRHFXS3hxQUZnSGNJZ19BeHFEWHl1ck5lenlPbGExMWxhYmE5NkU9czk2LWMiLCJnaXZlbl9uYW1lIjoibSIsImZhbWlseV9uYW1lIjoiZ29tZXMiLCJpYXQiOjE3Mzg2MTk4MTksImV4cCI6MTczODYyMzQxOX0.woahNseUIQ8ixhvEOLfPMw0sJGlO0AX2FDwy2mt72D-eaOb0-xbez44bAUlr3_4OlIdV-_raHTdsuxeRo4bXuJc6DKZfHevno4okE3_DofJsm995zBu9-LaegJiFPNLQYBSfMf11iC0jch1Ge4szB8PhpHE208MmJH98eoBzozbTTAb_kxnWq9qMOm86ZSZSCnQ1j5QeDa58tiTtZERQPh5VGxCzUkcuN9UO21eFPEwdeLd2Gvbjzf2sseSlyFpMpvaGFYlGbb8lOjom3ktXGEvkpuhpRV2MZDCTFyOx_4lrqP-ERkLuRHUNASMYoHXcKjwhX6QrfkDaN7TkPJJkhA',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-03T21:56:59.999Z'),
+//     //     updatedAt: new Date('2025-02-03T21:56:59.999Z'),
+//     //   },
+//     //   {
+//     //     userId: 'cm6qpqt8p0000l803xrjucda4',
+//     //     type: 'oidc',
+//     //     provider: 'google',
+//     //     providerAccountId: '116495263948226933712',
+//     //     refresh_token: null,
+//     //     access_token:
+//     //       'ya29.a0AXeO80RdB5GtU-7BGK8miy_ZGNFMRZlWjmOOiwPaYej6s6sYnbfzAeBQzA10PB6O83fxIUmsNj25qWnGWpMgjNpVBdwyCnoAFKdXEHSCFOWqZ5e_ciXLpflfjMgp59pI7W-UjCyjn5CwDSnQwEtKtxRjWhHiKeLrecoset30aCgYKAbkSARISFQHGX2MibelZyr-yLjGppDBKRhhiVg0175',
+//     //     expires_at: 1738691264,
+//     //     token_type: 'bearer',
+//     //     scope:
+//     //       'openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+//     //     id_token:
+//     //       'eyJhbGciOiJSUzI1NiIsImtpZCI6ImVlYzUzNGZhNWI4Y2FjYTIwMWNhOGQwZmY5NmI1NGM1NjIyMTBkMWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzODkyNTgyNTEwOS05cXZscDlzN3E0cXVmbWU1aXZvNTl2MGpmbWkwN2xqNy5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjM4OTI1ODI1MTA5LTlxdmxwOXM3cTRxdWZtZTVpdm81OXYwamZtaTA3bGo3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTE2NDk1MjYzOTQ4MjI2OTMzNzEyIiwiZW1haWwiOiJuaWNvdmkzckBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InUtT2pXOVFfZHlsck1iS2NOMGRSRXciLCJuYW1lIjoiTmljb2xhcyBWaWVyIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0s2V0lEOF9TVWJ3S1J0Vzg3SXZ3a0xnRkJEcU9CQlplVExLRUM4ZEZVMEotcEw0Zz1zOTYtYyIsImdpdmVuX25hbWUiOiJOaWNvbGFzIiwiZmFtaWx5X25hbWUiOiJWaWVyIiwiaWF0IjoxNzM4Njg3NjY1LCJleHAiOjE3Mzg2OTEyNjV9.orqCw49gJkAbM9GkVXgBpWTYrQ2XSihgzMOoUPbKEmpC_OFmEl4hD_CgPnEeuZT1V1Pj4epcgYqRkMKsPMi8r5xtoQdTe-M4E73JPIyOjP_aU9M-LBmLSAZz9jDDyW-FYVPkJVf_V8UMmWHFKkFFDBZJ-O8roCpQUx5ZMor2yxlV01_642d_V6zcF006HBzR-bMqByJD2pueISiDIXwjQaE3x4yxCdDxfKlgnkmGlkJx0LYrsoGTkL7dfnR4-ZjSAcnof1NDKKrPjnj2KyQ1_fBusDaepNj4-2rWiGbzCt5sIqx9nA3YDxociIjwk6DmPLSwzNusSvR68Ssyh1YZ9g',
+//     //     session_state: null,
+//     //     createdAt: new Date('2025-02-04T16:47:46.092Z'),
+//     //     updatedAt: new Date('2025-02-04T16:47:46.092Z'),
+//     //   },
+//     // ];
 
-    for (const player of players) {
-      // Actualizar o crear jugadores
-      const existingPlayer = await prisma.player.findUnique({
-        where: { id: player.id },
-      });
+//     // await prisma.user.createMany({
+//     //   data: users,
+//     // });
+//     // await prisma.account.createMany({
+//     //   data: account,
+//     // });
 
-      if (existingPlayer) {
-        // Si el jugador ya existe, solo reiniciar estadísticas y ranking
-        await prisma.player.update({
-          where: { id: existingPlayer.id },
-          data: {
-            ranking: player.ranking,
-            gamesWon: 0,
-            gamesLost: 0,
-            setsWon: 0,
-            setsLost: 0,
-            tiebreaksWon: 0,
-            tiebreaksLost: 0,
-            matchesLost: 0,
-          },
-        });
-      } else {
-        // Si no existe, crear el jugador
-        const newPlayer = await prisma.player.create({
-          data: {
-            name: player.name,
-            ranking: player.ranking,
-          },
-        });
+//     await prisma.player.createMany({
+//       data: playerList,
+//     });
 
-        console.log(`Jugador creado: ${newPlayer.name} con ranking ${newPlayer.ranking}`);
-      }
+//     // console.log('Jugadores reiniciados y rankingHistory inicial registrado.');
+//   } catch (error) {
+//     console.error('Error al reiniciar y poblar jugadores:', error);
+//     throw new Error('Error al reiniciar y poblar jugadores');
+//   } finally {
+//     await prisma.$disconnect();
+//   }
+// }
 
-      // Registrar el historial inicial de ranking
-      const playerData =
-        existingPlayer || (await prisma.player.findUnique({ where: { id: player.id } }));
-      if (playerData) {
-        await prisma.rankingHistory.create({
-          data: {
-            playerId: playerData.id,
-            ranking: player.ranking,
-            date: new Date(),
-          },
-        });
-      }
-    }
-
-    console.log('Jugadores reiniciados y rankingHistory inicial registrado.');
-  } catch (error) {
-    console.error('Error al reiniciar y poblar jugadores:', error);
-    throw new Error('Error al reiniciar y poblar jugadores');
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
-// Ejecutar el script
-resetAndSeedPlayers().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// // Ejecutar el script
+// resetAndSeedPlayers().catch((e) => {
+//   console.error(e);
+//   process.exit(1);
+// });

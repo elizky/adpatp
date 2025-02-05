@@ -239,7 +239,7 @@ export async function generateNewsContent(newsInput: string): Promise<BlogPostCo
     }
   `;
 
-  console.log('prompt', prompt);
+  console.log('1 ===== prompt', prompt);
   try {
     const { text } = await generateText({
       model: google('gemini-2.0-flash-thinking-exp'),
@@ -247,8 +247,9 @@ export async function generateNewsContent(newsInput: string): Promise<BlogPostCo
       prompt: prompt,
     });
 
-    console.log('text ====>', text);
+    console.log('2 ===== text ====>', text);
     const cleanText = text.replace(/```json|```/g, '').trim();
+    console.log('3 ===== cleanText', cleanText);
 
     // Parsear el JSON limpio
     const rawContent = JSON.parse(cleanText);
@@ -259,6 +260,7 @@ export async function generateNewsContent(newsInput: string): Promise<BlogPostCo
 
     // Crear el post en la base de datos
     const parsedContent = parseBlogPostContent(rawContent);
+    console.log('4 ===== parsedContent', parsedContent);
     await createBlogPost(parsedContent);
 
     return rawContent;

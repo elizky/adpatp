@@ -3,6 +3,7 @@
 
 import { db } from '@/server/db/prisma';
 import { BlogPostContent } from '@/types/types';
+import slugify from 'slugify';
 
 export const getBlogPosts = async () => {
   try {
@@ -17,15 +18,15 @@ export const getBlogPosts = async () => {
   }
 };
 
-export const getBlogPostById = async (id: number) => {
+export const getBlogPostById = async (slug: string) => {
   try {
     const post = await db.blogPost.findUnique({
-      where: { id },
+      where: { slug },
     });
     return post;
   } catch (error) {
-    console.error('Error fetching blog post by ID:', error);
-    throw new Error('Error fetching blog post by ID');
+    console.error('Error fetching blog post by slug:', error);
+    throw new Error('Error fetching blog post by slug');
   }
 };
 
@@ -34,12 +35,25 @@ export const createBlogPost = async (content: BlogPostContent, matchId?: number)
     // Buscar el título en la primera sección de tipo 'heading'
     const titleSection = content.sections.find((section) => section.type === 'heading');
     const title = titleSection ? titleSection.content : 'Crónica sin título';
+    console.log('5 ===== title', title);
+
+    // Seleccionar una imagen aleatoria de las 18 disponibles
+    const randomImageIndex = Math.floor(Math.random() * 18) + 1;
+    const imageUrl = `/images/blog-post-${randomImageIndex}.jpg`; // Ruta dentro de /public
+
+    console.log('6 ===== imageUrl', imageUrl);
+
+    const slug = slugify(title, { lower: true, strict: true });
+    console.log('7 ===== slug', slug);
 
     const newPost = await db.blogPost.create({
       data: {
         title,
-        content: content as unknown as any, // 🔹 Prisma espera un JSON, pero TypeScript puede quejarse
+        slug,
+        content: content as unknown as any,
         matchId,
+        createdBy: 'Carlitos',
+        imageUrl,
       },
     });
 
