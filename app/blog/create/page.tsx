@@ -20,11 +20,11 @@ export default async function CreateNewsPage() {
 
     try {
       await generateNewsContent(input);
-      redirect('/blog');
     } catch (error) {
       console.error('Error creating news:', error);
       throw error;
     }
+    redirect('/blog');
   }
 
   return (

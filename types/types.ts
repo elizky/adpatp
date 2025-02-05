@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Match {
   id: number;
   date: Date | string; // Fecha del partido
@@ -158,13 +159,17 @@ export type MatchDetail = {
 export type PagesProps = {
   params: Promise<{ id: string }>;
 };
+export type PagesPropsSlug = {
+  params: Promise<{ slug: string }>;
+};
 
 export type Post = {
   id: number;
   title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  slug: string;
   content: any;
   createdAt: Date;
   matchId: number | null;
   createdBy: string | null;
+  imageUrl: string | null;
 };
