@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from 'next';
 import { getBlogPostById } from '@/actions/blog-actions';
 import type { BlogPostContent, PagesProps } from '@/types/types';
@@ -23,7 +24,7 @@ export default async function BlogPostPage({ params }: PagesProps) {
     return <div className='container mx-auto p-6 text-center'>Post no encontrado</div>;
   }
 
-  const match = await getMatchById(post.matchId);
+  const match = post.matchId ? await getMatchById(post.matchId) : null;
 
   const content = post.content as BlogPostContent;
 
