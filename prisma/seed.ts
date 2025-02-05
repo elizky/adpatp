@@ -23,7 +23,7 @@ async function resetAndSeedPlayers() {
       { id: 1, name: 'Jaime' },
       { id: 2, name: 'Marcos' },
       { id: 3, name: 'Yeta' },
-      { id: 4, name: 'Pela' },
+      { id: 4, name: 'Guille' },
       { id: 5, name: 'Jotu' },
       { id: 6, name: 'Second' },
       { id: 7, name: 'Porte' },
@@ -34,10 +34,9 @@ async function resetAndSeedPlayers() {
       { id: 12, name: 'Dilan' },
       { id: 13, name: 'Abel' },
       { id: 14, name: 'Enano' },
-      { id: 15, name: 'Guille' },
     ].map((player, index) => ({
       ...player,
-      ranking: rankings[index]
+      ranking: rankings[index],
     }));
 
     for (const player of players) {

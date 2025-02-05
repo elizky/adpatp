@@ -165,5 +165,6 @@ export type Post = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any;
   createdAt: Date;
-  matchId: number;
+  matchId: number | null;
+  createdBy: string | null;
 };
