@@ -39,7 +39,7 @@ export default async function BlogPostPage({ params }: PagesProps) {
         </Button>
         <h1 className='text-4xl font-bold font-mono mb-6 '>{post.title}</h1>
         <p className='text-muted-foreground italic mb-12'>
-          {new Date(post.createdAt).toLocaleDateString()} - Creado por AIzky
+          {new Date(post.createdAt).toLocaleDateString()} - Creado por <span className='italic'>Carlitos</span>
         </p>
         <div className='space-y-8 text-justify'>
           {content.sections.map((section, index) => (

@@ -9,6 +9,7 @@ export const getBlogPosts = async () => {
     const posts = await db.blogPost.findMany({
       orderBy: { createdAt: 'desc' },
     });
+    console.log('posts', posts);
     return posts;
   } catch (error) {
     console.error('Error fetching blog posts:', error);
@@ -28,15 +29,11 @@ export const getBlogPostById = async (id: number) => {
   }
 };
 
-export const createBlogPost = async (content: BlogPostContent, matchId: number) => {
+export const createBlogPost = async (content: BlogPostContent, matchId?: number) => {
   try {
     // Buscar el título en la primera sección de tipo 'heading'
     const titleSection = content.sections.find((section) => section.type === 'heading');
     const title = titleSection ? titleSection.content : 'Crónica sin título';
-
-    if (!matchId) {
-      throw new Error('El matchId es obligatorio.');
-    }
 
     const newPost = await db.blogPost.create({
       data: {

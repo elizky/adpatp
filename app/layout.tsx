@@ -3,6 +3,7 @@ import { Funnel_Sans, Funnel_Display } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import { ModalProvider } from '@/lib/ModalContext';
+import { Analytics } from '@vercel/analytics/next';
 
 const leagueSpartan = Funnel_Sans({
   variable: '--font-funnel-sans',
@@ -53,6 +54,7 @@ export default function RootLayout({
         <body className={`${leagueSpartan.variable} ${geistMono.variable} antialiased font-sans`}>
           <Header />
           {children}
+          <Analytics />
         </body>
       </ModalProvider>
     </html>
