@@ -9,6 +9,7 @@ import Loading from '@/app/loading';
 import { useModal } from '@/lib/ModalContext';
 import { getBlogPosts } from '@/actions/blog-actions';
 import PostCard from './PostCard';
+import NewsForm from './forms/NewsForm';
 
 interface HomeProps {
   isAdmin: boolean;
@@ -20,6 +21,7 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const { isOpen, closeModal, setIsOpen, matchData } = useModal();
+  const [isNewsFormOpen, setIsNewsFormOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -50,14 +52,17 @@ export default function HomeComponent({ isAdmin }: HomeProps) {
     <div className='min-h-screen bg-background'>
       <main className='container mx-auto px-6 py-6'>
         {isAdmin && (
-          <MatchForm
-            players={players}
-            fetchData={fetchData}
-            match={matchData}
-            isOpen={isOpen}
-            closeModal={closeModal}
-            setIsOpen={setIsOpen}
-          />
+          <div className='flex flex-col md:flex-row gap-4'>
+            <MatchForm
+              players={players}
+              fetchData={fetchData}
+              match={matchData}
+              isOpen={isOpen}
+              closeModal={closeModal}
+              setIsOpen={setIsOpen}
+            />
+            <NewsForm isOpen={isNewsFormOpen} setIsOpen={setIsNewsFormOpen} onSuccess={fetchData} />
+          </div>
         )}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
           <div className={`lg:col-span-2 ${matches.length === 0 && 'lg:col-span-3'}`}>

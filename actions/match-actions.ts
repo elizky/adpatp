@@ -48,6 +48,7 @@ interface SaveMatchActionProps {
   player2Id: string;
   player1Games: string[] | number[];
   player2Games: string[] | number[];
+  comments?: string;
 }
 
 export async function saveMatchAction(props: SaveMatchActionProps) {
@@ -55,7 +56,7 @@ export async function saveMatchAction(props: SaveMatchActionProps) {
     // Validar datos de entrada
     matchSchema.parse(props);
 
-    const { location, player1Id, player2Id, player1Games, player2Games } = props;
+    const { location, player1Id, player2Id, player1Games, player2Games, comments } = props;
 
     // Obtener jugadores
     const [player1, player2] = await Promise.all([
@@ -142,6 +143,7 @@ export async function saveMatchAction(props: SaveMatchActionProps) {
         `Juegos totales de ${player1.name}: ${match.totalGamesPlayer1}`,
         `Juegos totales de ${player2.name}: ${match.totalGamesPlayer2}`,
       ],
+      comments: comments,
     });
 
     const parsedContent = parseBlogPostContent(postContent);
