@@ -10,7 +10,6 @@ export const getBlogPosts = async () => {
     const posts = await db.blogPost.findMany({
       orderBy: { createdAt: 'desc' },
     });
-    console.log('posts', posts);
     return posts;
   } catch (error) {
     console.error('Error fetching blog posts:', error);

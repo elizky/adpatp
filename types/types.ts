@@ -138,22 +138,22 @@ export type BlogPostContent = {
 export type MatchDetail = {
   player1: PlayerBlog;
   player2: PlayerBlog;
-  winner: string; // Nombre del ganador
-  score: string; // Resultado final (ejemplo: "6-4, 3-6, 7-6")
-  date: string; // Fecha del partido
-  location: string; // Lugar del partido
-  highlights: string[]; // Momentos destacados del partido
+  winner: string;
+  score: string;
+  date: string;
+  location: string;
+  highlights: string[];
 
-  // Campos adicionales para enriquecer el artículo
-  duration?: string; // Duración del partido (ejemplo: "2 horas y 45 minutos")
-  setsWonByPlayer1: number; // Cantidad de sets ganados por Player1
-  setsWonByPlayer2: number; // Cantidad de sets ganados por Player2
-  totalGamesPlayer1: number; // Total de juegos ganados por Player1
-  totalGamesPlayer2: number; // Total de juegos ganados por Player2
-  tiebreakWonByPlayer?: number; // 1 si Player1 ganó el tiebreak, 2 si Player2 lo ganó (opcional)
-  player1Games: number[]; // Juegos ganados por Player1 en cada set
-  player2Games: number[]; // Juegos ganados por Player2 en cada set
-  superTiebreak?: number[]; // Resultados del super tiebreak (opcional)
+  duration?: string;
+  setsWonByPlayer1: number;
+  setsWonByPlayer2: number;
+  totalGamesPlayer1: number;
+  totalGamesPlayer2: number;
+  tiebreakWonByPlayer?: number;
+  player1Games: number[];
+  player2Games: number[];
+  superTiebreak?: number[];
+  comments?: string; // para agregar comentarios
 };
 
 export type PagesProps = {

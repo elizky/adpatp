@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/select';
 import PlayerScoreInput from './PlayerScoreInput';
 import { editMatchAction } from '@/actions/edit-delete-actions';
+import { Textarea } from '../ui/textarea';
 
 interface MatchFormProps {
   players: Player[];
@@ -50,6 +51,7 @@ export default function MatchForm({
     player2: match?.player2Id || '',
     player1Games: match?.player1Games || ['', '', ''],
     player2Games: match?.player2Games || ['', '', ''],
+    comments: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -62,6 +64,7 @@ export default function MatchForm({
         player2: match.player2Id,
         player1Games: match.player1Games,
         player2Games: match.player2Games,
+        comments: '',
       });
     }
   }, [match]);
@@ -80,6 +83,7 @@ export default function MatchForm({
       player2: '',
       player1Games: ['', '', ''],
       player2Games: ['', '', ''],
+      comments: '',
     });
     setLoading(false);
     closeModal();
@@ -108,6 +112,7 @@ export default function MatchForm({
           player2Id: formData.player2.toLocaleString(),
           player1Games: formData.player1Games,
           player2Games: formData.player2Games,
+          comments: formData.comments,
         });
       }
 
@@ -224,6 +229,18 @@ export default function MatchForm({
                 }
               />
             )}
+
+            <div className='space-y-2'>
+              <Label htmlFor='comments'>Comentarios</Label>
+              <Textarea
+                disabled={loading}
+                id='comments'
+                placeholder='Agregar comentario...'
+                value={formData.comments}
+                onChange={(e) => setFormData({ ...formData, comments: e.target.value })}
+                className='w-full'
+              />
+            </div>
           </div>
 
           <Button type='submit' className='w-full' disabled={loading}>

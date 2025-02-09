@@ -18,6 +18,11 @@ export async function generateBlogPostContent(matchDetails: MatchDetail): Promis
   }) vs ${matchDetails.player2Games.join('-')} (${matchDetails.player2.name}), jugado el ${
     matchDetails.date
   } en ${matchDetails.location}. El ganador fue ${matchDetails.winner}.
+
+  ${
+    matchDetails.comments &&
+    `Los comentarios del partidos son los siguientes: ${matchDetails.comments}`
+  }
   
   Detalles adicionales:
   - Estadísticas clave:
