@@ -33,7 +33,7 @@ export default async function BlogPostPage({ params }: PagesPropsSlug) {
   const content = post.content as BlogPostContent;
 
   return (
-    <article className='container mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+    <article className='container mx-auto px-6 lg:px-8 py-12'>
       <div className='max-w-4xl mx-auto'>
         <Button variant='ghost' className='mb-6 p-0 hover:bg-transparent'>
           <Link href='/blog' className='inline-flex items-center text-primary hover:underline'>
