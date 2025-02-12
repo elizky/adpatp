@@ -1,6 +1,6 @@
 'use client';
 
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from 'recharts';
+import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from 'recharts';
 
 import { CardContent } from '@/components/ui/card';
 import {
@@ -41,6 +41,7 @@ export function LineChartComponent({ data }: { data: Array<{ month: string; rank
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis domain={[1, 14]} reversed={true} hide={true} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator='line' />} />
             <Line
               dataKey='ranking'
